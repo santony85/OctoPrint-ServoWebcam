@@ -22,14 +22,22 @@
 ##############################################
 import os
 import flask
-from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin
+from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin, ShutdownPlugin
 import RPi.GPIO as GPIO
+from gpiozero import Servo
+
 import threading
 import logging
 import time
 import requests
 import subprocess
 import shutil
+
+ServoX = Servo(12)
+ServoY = Servo(13)
+
+ServoX.mid()
+ServoY.mid()
 
 #### Constants for photo delay and inactive timeout
 PHOTO_DELAY = 5  # seconds
