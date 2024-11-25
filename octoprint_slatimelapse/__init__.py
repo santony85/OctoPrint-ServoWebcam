@@ -22,10 +22,8 @@
 ##############################################
 import os
 import flask
-from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin, ShutdownPlugin
+from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin
 import RPi.GPIO as GPIO
-from gpiozero import Servo
-
 import threading
 import logging
 import time
@@ -33,18 +31,12 @@ import requests
 import subprocess
 import shutil
 
-ServoX = Servo(12)
-ServoY = Servo(13)
-
-ServoX.mid()
-ServoY.mid()
-
 #### Constants for photo delay and inactive timeout
 PHOTO_DELAY = 5  # seconds
 INACTIVE_TIMEOUT = 240  # seconds
 
 #### Set up logging
-log = logging.getLogger("octoprint.plugins.servowebcam")
+log = logging.getLogger("octoprint.plugins.sla_timelapse")
 
 #### Plugin class definition
 class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin):
