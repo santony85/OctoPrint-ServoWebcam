@@ -31,12 +31,6 @@ import requests
 import subprocess
 import shutil
 
-from gpiozero import Servo
-
-myGPIO=13
-myServo = Servo(myGPIO)
-
-myServo.mid()
 
 #### Constants for photo delay and inactive timeout
 PHOTO_DELAY = 5  # seconds
