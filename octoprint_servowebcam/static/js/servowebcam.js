@@ -1,5 +1,5 @@
 $(function() {
-    function slatimelapseViewModel(parameters) {
+    function servowebcamViewModel(parameters) {
         var self = this;
 
         self.loginState = parameters[0];
@@ -16,7 +16,7 @@ $(function() {
     // the global variable ADDITIONAL_VIEWMODELS
     ADDITIONAL_VIEWMODELS.push([
         // This is the constructor to call for instantiating the plugin
-        slatimelapseViewModel,
+        servowebcamViewModel,
 
         // This is a list of dependencies to inject into the plugin, the order which you request here is the order
         // in which the dependencies will be injected into your view model upon instantiation via the parameters

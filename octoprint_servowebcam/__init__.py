@@ -36,10 +36,10 @@ PHOTO_DELAY = 5  # seconds
 INACTIVE_TIMEOUT = 240  # seconds
 
 #### Set up logging
-log = logging.getLogger("octoprint.plugins.sla_timelapse")
+log = logging.getLogger("octoprint.plugins.servo_webcam")
 
 #### Plugin class definition
-class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin):
+class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin):
     def __init__(self):
         super().__init__()
         # Initialize plugin state variables
@@ -258,14 +258,14 @@ class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlu
     ##### Method to provide assets (JavaScript files)
     def get_assets(self):
         return dict(
-            js=["js/slatimelapse.js"]
+            js=["js/servowebcam.js"]
         )
 
 #### Plugin metadata
-__plugin_name__ = "Sla Timelapse"
+__plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=3.7,<4"
 
 #### Plugin load function
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = SlaTimelapsePlugin()
+    __plugin_implementation__ = ServoWebcamPlugin()
