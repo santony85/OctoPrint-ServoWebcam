@@ -36,7 +36,7 @@ PHOTO_DELAY = 5  # seconds
 INACTIVE_TIMEOUT = 240  # seconds
 
 #### Set up logging
-log = logging.getLogger("octoprint.plugins.sla_timelapse")
+log = logging.getLogger("octoprint.plugins.servowebcam")
 
 #### Plugin class definition
 class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin):
