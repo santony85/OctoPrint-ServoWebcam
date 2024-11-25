@@ -6,8 +6,8 @@ $(function() {
         self.settings = parameters[1];
 
         self.onToggleTimelapseEnable = function() {
-            console.log("current setting: " + self.settings.settings.plugins.slatimelapse.enabled());
-            self.settings.settings.plugins.slatimelapse.enabled(!self.settings.settings.plugins.slatimelapse.enabled());
+            console.log("current setting: " + self.settings.settings.plugins.servowebcam.enabled());
+            self.settings.settings.plugins.servowebcam.enabled(!self.settings.settings.plugins.servowebcam.enabled());
             self.settings.saveData();
         };
     }
@@ -24,6 +24,6 @@ $(function() {
         ["loginStateViewModel", "settingsViewModel"],
 
         // Finally, this is the list of all elements we want this view model to be bound to.
-        ["#navbar_plugin_slatimelapse", "#settings_plugin_slatimelapse"]
+        ["#navbar_plugin_servowebcam", "#settings_plugin_servowebcam"]
     ]);
 });

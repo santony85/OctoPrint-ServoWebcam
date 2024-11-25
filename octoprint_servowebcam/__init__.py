@@ -17,7 +17,7 @@
 # * "i" buttons for more info
 #
 #also added to navbar
-# * SlaTimelapse On/OFF button <----------- WORKING
+# * servowebcam On/OFF button <----------- WORKING
 # 
 ##############################################
 import os
@@ -77,11 +77,11 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
         timeout = self._settings.get_int(["timeout"])
         avi_folder = self._settings.get(["avi_folder"])
     ########### BOOT LOG'S #######################
-        log.info(f"SlaTimelapse Config - GPIO Pin retrieved from settings: {gpio_pin}")
-        log.info(f"SlaTimelapse Config - Photo Delay retrieved from settings: {photo_delay}")
-        log.info(f"SlaTimelapse Config - Store Folder retrieved from settings: {snapshot_folder}")
-        log.info(f"SlaTimelapse Config - Timeout value from settings: {timeout}")
-        log.info(f"SlaTimelapse Config - AVI Folder retrieved from settings: {avi_folder}")
+        log.info(f"servowebcam Config - GPIO Pin retrieved from settings: {gpio_pin}")
+        log.info(f"servowebcam Config - Photo Delay retrieved from settings: {photo_delay}")
+        log.info(f"servowebcam Config - Store Folder retrieved from settings: {snapshot_folder}")
+        log.info(f"servowebcam Config - Timeout value from settings: {timeout}")
+        log.info(f"servowebcam Config - AVI Folder retrieved from settings: {avi_folder}")
 
     #### Method called when settings are saved
     def on_settings_save(self, data):
