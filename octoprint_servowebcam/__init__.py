@@ -126,7 +126,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 		# Define your plugin's asset files to automatically include in the
 		# core UI here.
 		return dict(
-			js=["js/servowebcam.js"],
+			js=["js/EasyServo.js"],
 		)
 
 	##~~ StartupPlugin mixin
@@ -183,10 +183,27 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 	##-- Template hooks
 
 	def get_template_configs(self):
-		return [
-            dict(type="settings", custom_bindings=False, template="servowebcam_settings.jinja2"),
-            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2")
-        ]
+		return [dict(type="settings", custom_bindings=False),
+				dict(type="generic", template="EasyServo.jinja2", custom_bindings=True)]
+
+	##~~ Softwareupdate hook
+
+	def get_update_information(self):
+		return dict(
+			EasyServo=dict(
+				displayName="Easy Servo",
+				displayVersion=self._plugin_version,
+
+				# version check: github repository
+				type="github_release",
+				user="mledan",
+				repo="OctoPrint-EasyServo",
+				current=self._plugin_version,
+
+				# update method: pip
+				pip="https://github.com/mledan/OctoPrint-EasyServo/archive/{target_version}.zip"
+			)
+		)
 
 	##~~ Utility functions
 
@@ -458,7 +475,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 				time.sleep(sleepTime / 1000)
 
 	def process_gcode(self, comm, line, *args, **kwargs):
-		if line.startswith('ServoWebcam_REL'):
+		if line.startswith('EASYSERVO_REL'):
 			if len(line.split()) == 3:
 				if pigpioUsed:
 					command, GPIO, ang = line.split()
@@ -477,7 +494,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 					else:
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 
-		if line.startswith('ServoWebcam_ABS'):
+		if line.startswith('EASYSERVO_ABS'):
 			if len(line.split()) == 3:
 				if pigpioUsed:
 					command, GPIO, ang = line.split()
@@ -496,9 +513,9 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 					else:
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
-				self._logger.info("please use ServoWebcam_ABS PIN/AXIS ANGLE instead of '{}'".format(str(line)))
+				self._logger.info("please use EASYSERVO_ABS PIN/AXIS ANGLE instead of '{}'".format(str(line)))
 
-		if line.startswith('ServoWebcamAUTOHOME'):
+		if line.startswith('EASYSERVOAUTOHOME'):
 			xAutoAngle = self._settings.get_int(["xAutoAngle"])
 			yAutoAngle = self._settings.get_int(["yAutoAngle"])
 			if len(line.split()) == 3:
@@ -568,7 +585,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 						self._logger.info("unknown axis {}".format(str(axis)))
 			else:
 				self._logger.info(
-					"Please use ServoWebcamAUTOHOME GPIO1/AXIS1 (GPIO2/AXIS2) instead of '{}'".format(str(line)))
+					"Please use EASYSERVOAUTOHOME GPIO1/AXIS1 (GPIO2/AXIS2) instead of '{}'".format(str(line)))
 
 		return line
 
@@ -612,14 +629,14 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 
 	def get_api_commands(self):
 		return {
-			"ServoWebcam_REL": [],
-			"ServoWebcam_ABS": [],
-			"ServoWebcamAUTOHOME": [],
-			"ServoWebcam_GET_POSITION": []
+			"EASYSERVO_REL": [],
+			"EASYSERVO_ABS": [],
+			"EASYSERVOAUTOHOME": [],
+			"EASYSERVO_GET_POSITION": []
 		}
 
 	def on_api_command(self, command, data):
-		if command == "ServoWebcam_REL":
+		if command == "EASYSERVO_REL":
 			if len(data) == 3:
 				if pigpioUsed:
 					GPIO, ang = data["pin"], data["angle"]
@@ -639,9 +656,9 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
 				self._logger.info(
-					"please use the ServoWebcam_REL PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
+					"please use the EASYSERVO_REL PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
 
-		if command == 'ServoWebcam_ABS':
+		if command == 'EASYSERVO_ABS':
 			if len(data) == 3:
 				if pigpioUsed:
 					GPIO, ang = data["pin"], data["angle"]
@@ -662,9 +679,9 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
 				self._logger.info(
-					"please use ServoWebcam_ABS PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
+					"please use EASYSERVO_ABS PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
 
-		if command == 'ServoWebcamAUTOHOME':
+		if command == 'EASYSERVOAUTOHOME':
 			xAutoAngle = self._settings.get_int(["xAutoAngle"])
 			yAutoAngle = self._settings.get_int(["yAutoAngle"])
 			if len(data) == 3:
@@ -733,7 +750,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 					else:
 						self._logger.info("unknown axis {}".format(str(axis)))
 
-		if command == "ServoWebcam_GET_POSITION":
+		if command == "EASYSERVO_GET_POSITION":
 			if pigpioUsed:
 				if self._settings.get_boolean(["xInvert"]):
 					currentX = 180 - self.width_to_angle(
@@ -745,7 +762,7 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 						self.pi.get_servo_pulsewidth(self._settings.get_int(["GPIOY"])))
 				else:
 					currentY = self.width_to_angle(self.pi.get_servo_pulsewidth(self._settings.get_int(["GPIOY"])))
-				self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentX, currentY))
+				self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentX, currentY))
 			else:
 				if self._settings.get_boolean(["xInvert"]):
 					currentX = 180 - self.pimoroni_to_angle(pantilthat.get_pan())
@@ -756,12 +773,13 @@ class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
 				else:
 					currentY = self.pimoroni_to_angle(pantilthat.get_tilt())
 				if self._settings.get_boolean(["axisInvert"]):
-					self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentY, currentX))
+					self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentY, currentX))
 				else:
-					self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentX, currentY))
+					self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentX, currentY))
 
 	def on_api_get(self, request):
 		return flask.jsonify(foo="bar")
+
 
 
 #### Plugin metadata
