@@ -1,129 +1,315 @@
-<div class="control-group">
-    <label class="control-label">Plugin Status:</label>
-    <div class="controls">
-        <label class="checkbox">
-            <input type="checkbox" id="plugin_enabled" data-bind="checked: settings.settings.plugins.servowebcam.enabled">
-            Enabled
-        </label>
-    </div>
-</div>
-<table>
-<tbody>
-<tr>
-<td>
-<h3> Sla Timalapse configurations</h3>
-
-<div class="control-group">
-    <label class="control-label" for="gpio_pin">GPIO Pin Number:</label>
-    <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="gpio_pin" min="0" max="40" step="1" data-bind="value: settings.settings.plugins.servowebcam.gpio_pin">
-        <span class="info-icon">
-		    <a href="https://pinout.xyz/" target="_blank" class="same-color">
-		        <img src="/plugin/servowebcam/static/img/info.png" alt="Information">
-		    </a>
-		</span>
-        <p class="help-block">Enter the BCM GPIO pin number (0-40) for your setup.</p>
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="photo_delay">Photo Delay (seconds):</label>
-    <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="photo_delay" min="1" step="1" data-bind="value: settings.settings.plugins.servowebcam.photo_delay">
-        <span class="info-icon">
-            <a href="#" class="same-color" data-toggle="modal" data-target="#helpModal"> <!-- Added data-toggle and data-target attributes -->
-                <img src="/plugin/servowebcam/static/img/info.png" alt="Information">
-            </a>
-        </span>
-        <p class="help-block">Enter the delay between photos (in seconds).</p>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="helpModalLabel">Photo Delay Help</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <h4> More info: </h4>
-                <p>You can use a stopwatch to get this value, <b>Start</b> when UV turns off and <b>Stop</b> when the buildplate reaches the up most top before coming down again.</p>
-            	<p>If you get values like 4.32 sec, round it dowsn for exemple to 4 sec. </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+<div id="settings-panel-servo">
+    <h4>Easy Servo Settings
+        <div class="label label-info pull-right"><small style="color:white;">Please make sure that all prerequisites are
+            met as described <a style="color:white;"
+                                href="https://github.com/jneilliii/OctoPrint-EasyServo#pre-installation-requirements">here</a>.</small>
         </div>
-    </div>
+    </h4>
+    <table id="settings_plugin_EasyServo_table">
+        <form class="form" id="settings_plugin_EasyServo_form">
+            <tr>
+                <td>
+                    <div class="control-group" id="firstTabEasyServo">
+                        <div class="controls" id="GPIOX-div">
+                            <label for="GPIOX" class="control-label" id="gpio-number-x"></label>
+                            <input id="GPIOX" type="number" class="input-mini"
+                                   data-bind="value: settings.plugins.EasyServo.GPIOX">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group" id="secondTabEasyServo">
+                        <div class="controls">
+                            <label for="GPIOY" class="control-label" id="gpio-number-y"></label>
+                            <input id="GPIOY" type="number" class="input-mini"
+                                   data-bind="value: settings.plugins.EasyServo.GPIOY">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="xAutoAngle" class="control-label" id="autohome-angle-x"></label>
+                                <input id="xAutoAngle" type="number" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.xAutoAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="yAutoAngle" class="control-label"
+                                       id="autohome-angle-y">{{ _('Y AutoHome Angle') }}</label>
+                                <input id="yAutoAngle" type="number" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yAutoAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="control">
+                            <label for="xInvert" class="control-label"
+                                   id="axis-inversion-x">{{ _('X Axis Inversion') }}</label>
+                            <input id="xInvert" type="checkbox" class="input-block-level"
+                                   data-bind="checked: settings.plugins.EasyServo.xInvert">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="control">
+                            <label for="yInvert" class="control-label"
+                                   id="axis-inversion-y">{{ _('Y Axis Inversion') }}</label>
+                            <input id="yInvert" type="checkbox" class="input-block-level"
+                                   data-bind="checked: settings.plugins.EasyServo.yInvert">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group" id="thirdTabEasyServo">
+                        <div class="controls">
+                            <label for="axisInvert" class="control-label">{{ _('Pan/Tilt Axis Inversion') }}</label>
+                            <input id="axisInvert" type="checkbox" class="input-block-level"
+                                   data-bind="checked: settings.plugins.EasyServo.axisInvert">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="sleepTimeX" class="control-label"
+                                       id="sleep-time-x">{{ _('X Axis Sleep Time') }}</label>
+                                <input id="sleepTimeX" type="number" step="1" min="0" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.sleepTimeX">
+                                <span class="add-on">ms</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="sleepTimeY" class="control-label"
+                                       id="sleep-time-y">{{ _('Y Axis Sleep Time') }}</label>
+                                <input id="sleepTimeY" type="number" step="1" min="0" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.sleepTimeY">
+                                <span class="add-on">ms</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="xOffset" class="control-label">{{ _('X Offset from bed center') }}</label>
+                                <input id="xOffset" type="number" step="1" min="0" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.xOffsetBed">
+                                <span class="add-on">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="yOffset" class="control-label">{{ _('Y Offset over bed') }}</label>
+                                <input id="yOffset" type="number" step="1" min="0" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yOffsetOverBed">
+                                <span class="add-on">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="yOffset" class="control-label">{{ _('Y Offset under bed') }}</label>
+                                <input id="yOffset" type="number" step="1" min="0" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yOffsetUnderBed">
+                                <span class="add-on">mm</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="xRelativeAngle" class="control-label" id="x-relative-angle">{{ _('X Relative Angle') }}</label>
+                                <input id="xRelativeAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.xRelativeAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="yRelativeAngle" class="control-label" id="y-relative-angle">{{ _('Y Relative Angle') }}</label>
+                                <input id="yRelativeAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yRelativeAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="xMinAngle" class="control-label" id="x-min-angle">{{ _('X Minimum Angle') }}</label>
+                                <input id="xMinAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.xMinAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                            <div class="input-append">
+                                <label for="xMaxAngle" class="control-label" id="x-max-angle">{{ _('X Maximum Angle') }}</label>
+                                <input id="xMaxAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.xMaxAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <label for="yMinAngle" class="control-label" id="y-min-angle">{{ _('Y Minimum Angle') }}</label>
+                                <input id="yMinAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yMinAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                            <div class="input-append">
+                                <label for="yMaxAngle" class="control-label" id="y-max-angle">{{ _('Y Maximum Angle') }}</label>
+                                <input id="yMaxAngle" type="number" step="1" min="0" max="180" class="input-mini"
+                                       data-bind="value: settings.plugins.EasyServo.yMaxAngle">
+                                <span class="add-on">°</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td>
+                    <span><b>Point Name</b>&emsp;&emsp;&emsp;<b>X</b>&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;<b>Y</b></span><br>
+                    <span id="pointLocation">
+                        <div id="point1">
+                            <input type="text" id="pointName1" placeholder="point 1" style="width: 80px;"
+                                   data-bind="value: settings.plugins.EasyServo.point1">
+                            <span class="input-append" id="spanInputX1">
+                                <input type="number" id="xCoordinate1" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point1X">
+                                <span class="add-on" id="spanDeg1">°</span></span>
+                            <span class="input-append" id="spanInputY1">
+                                <input type="number" id="yCoordinate1" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point1Y">
+                                <span class="add-on" id="spanDeg1">°</span></span>
+                        </div>
+                        <div id="point2">
+                            <input type="text" id="pointName2" placeholder="point 2" style="width: 80px;"
+                                   data-bind="value: settings.plugins.EasyServo.point2">
+                            <span class="input-append" id="spanInputX2">
+                                <input type="number" id="xCoordinate2" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point2X">
+                                <span class="add-on" id="spanDeg2">°</span></span>
+                            <span class="input-append" id="spanInputY2">
+                                <input type="number" id="yCoordinate2" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point2Y">
+                                <span class="add-on" id="spanDeg2">°</span></span>
+                        </div>
+                        <div id="point3">
+                            <input type="text" id="pointName3" placeholder="point 3" style="width: 80px;"
+                                   data-bind="value: settings.plugins.EasyServo.point3">
+                            <span class="input-append" id="spanInputX3">
+                                <input type="number" id="xCoordinate3" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point3X">
+                                <span class="add-on" id="spanDeg3">°</span></span>
+                            <span class="input-append" id="spanInputY3">
+                                <input type="number" id="yCoordinate3" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point3Y">
+                                <span class="add-on" id="spanDeg3">°</span></span>
+                        </div>
+                        <div id="point4">
+                            <input type="text" id="pointName4" placeholder="point 4" style="width: 80px;"
+                                   data-bind="value: settings.plugins.EasyServo.point4">
+                            <span class="input-append" id="spanInputX4">
+                                <input type="number" id="xCoordinate4" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point4X">
+                                <span class="add-on" id="spanDeg4">°</span></span>
+                            <span class="input-append" id="spanInputY4">
+                                <input type="number" id="yCoordinate4" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point4Y">
+                                <span class="add-on" id="spanDeg4">°</span></span>
+                        </div>
+                        <div id="point5">
+                            <input type="text" id="pointName5" placeholder="point 5" style="width: 80px;"
+                                   data-bind="value: settings.plugins.EasyServo.point5">
+                            <span class="input-append" id="spanInputX5">
+                                <input type="number" id="xCoordinate5" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point5X">
+                                <span class="add-on" id="spanDeg5">°</span></span>
+                            <span class="input-append" id="spanInputY5">
+                                <input type="number" id="yCoordinate5" step="1" min="0" max="180" class="input-mini"
+                                       style="width: 40px;" data-bind="value: settings.plugins.EasyServo.point5Y">
+                                <span class="add-on" id="spanDeg5">°</span></span>
+                        </div>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="get-current-position" type="button" class="btn btn-primary">Get Current Position
+                    </button>
+                    <span>X: <span id="currentPositionX"></span> Y: <span id="currentPositionY"></span></span>
+                    <label for="enable-current-position-control"
+                           class="checkbox inline">{{ _('Enable this on control tab (soon)') }}</label>
+                    <input id="enable-current-position-control" type="checkbox"
+                           data-bind="checked: settings.plugins.EasyServo.enableCurrentPositionControl">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="librarySelect" class="control-label"
+                                   disabled>{{ _('Library used (require restart)') }} </label>
+                            <select id="librarySelect" data-bind="options: EasyServo.EasyServoOptions,
+                                                                optionsText: 'name',
+                                                                optionsValue: 'value',
+                                                                value: settings.plugins.EasyServo.chosenOption"></select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </form>
+    </table>
 </div>
-
-<hr>
-<div class="control-group"> <!-- Added -->
-    <label class="control-label" for="timeout">Timeout (seconds):</label>
-    <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="timeput" min="1" step="1" data-bind="value: settings.settings.plugins.servowebcam.timeout">
-        <span class="info-icon">
-            <a href="#" class="same-color" data-toggle="modal" data-target="#helpModalTimeout"> <!-- Added data-toggle and data-target attributes -->
-                <img src="/plugin/servowebcam/static/img/info.png" alt="Information">
-            </a>
-        </span>
-        <p class="help-block">Enter the timeout value (in seconds) after last layer to generate Video File.</p>
-    </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="helpModalTimeout" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="helpModalLabel">Photo Delay Help</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <h4> More info: </h4>
-                <p>This value refers to the amount of time that has to pass before if cancels/finished the current Job due to inactivity of since last layer.</p>
-            	<p>After this timeout, Sla Timelapse will generate a video file and save it !</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<hr>
-<div>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ldrCableModal">Make LDR Cable</button> <!-- Button for LDR Cable -->
-</div>
-<!-- Modal for LDR Cable -->
-<div class="modal fade" id="ldrCableModal" tabindex="-1" role="dialog" aria-labelledby="ldrCableModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ldrCableModalLabel">Make LDR Cable</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img src="/plugin/servowebcam/static/img/ldr_cable.png" alt="LDR Cable Image">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-</td>
-<td>
-		<a href="">
-		    <img src="/plugin/servowebcam/static/img/servowebcam.png" alt="Description of the image">
-		</a>
-</td>
-</tr>
-</tbody>
-</table>
