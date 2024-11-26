@@ -257,9 +257,8 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
     ##### Method to provide configuration for templates
     def get_template_configs(self):
         return [
-            dict(type="settings", custom_bindings=True, template="servowebcam_settings.jinja2"),
-            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2"),
-            dict(type="tab", custom_bindings=True, template="servowebcam_tab.jinja2", data_bind="allowBind: true")
+            dict(type="settings", custom_bindings=False, template="servowebcam_settings.jinja2"),
+            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2")
         ]
 
     ##### Method to provide assets (JavaScript files)
