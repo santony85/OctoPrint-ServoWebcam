@@ -103,11 +103,15 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 
     #### Set up GPIO pins for photo capture
     def _setup_gpio(self):
-        gpio_pin = self._settings.get_int(["gpio_pin"])
+        #gpio_pin = self._settings.get_int(["gpio_pin"])
+        gpio_pin = 12
         log.info(f"GPIO Pin retrieved from settings: {gpio_pin}")
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.add_event_detect(gpio_pin, GPIO.BOTH, callback=self._ldr_changed, bouncetime=100)
+        GPIO.setup(gpio_pin, GPIO.OUT)
+        #GPIO.add_event_detect(gpio_pin, GPIO.BOTH, callback=self._ldr_changed, bouncetime=100)
+        self.p = GPIO.PWM(gpio_pin, 50)
+        self.p.start(2.5) # Initialization
+        self.p.ChangeDutyCycle(12.5)
 
     #### Clean up GPIO pins and ongoing processes
     def _cleanup(self):
