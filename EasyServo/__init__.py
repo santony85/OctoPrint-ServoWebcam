@@ -28,9 +28,6 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
     def __init__(self):
         self.pi = None
         self.currentZ = 0
-        myGPIO=13
-        myServo = Servo(myGPIO)
-        myServo.min()
 
     # ~~ SettingsPlugin mixin
     def get_settings_defaults(self):
