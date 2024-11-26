@@ -1,34 +1,49 @@
-# coding=utf-8
-from __future__ import absolute_import
-import time
-
-import re
-
-import math
-
-import octoprint.plugin
-import threading
-
-import pigpio
-import pantilthat
-
-from gpiozero import Servo
-
+##############################################
+#                            V6.1.1
+# the settigns all work
+#
+# added timout and reset
+# added job folders
+# added file numbering
+# added timelapse FFmpeg file creation and output
+# added copy timelpase video to main folder
+# added octopring.log configs output
+# added check to use any "~" folder other then "pi"
+# added comments
+#
+#also added to settings
+# * Img for the printer delay
+# * button "Make an LDR cable" with png of cable
+# * "i" buttons for more info
+#
+#also added to navbar
+# * servowebcam On/OFF button <----------- WORKING
+# 
+##############################################
+import os
 import flask
+from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin,ShutdownPlugin
+import RPi.GPIO as GPIO
+import threading
+import logging
+import time
+import requests
+import subprocess
+import shutil
 
-ServoX = Servo(12)
-ServoY = Servo(13)
-
-ServoX.mid()
-ServoY.mid()
 
 
-class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
-					  octoprint.plugin.AssetPlugin,
-					  octoprint.plugin.TemplatePlugin,
-					  octoprint.plugin.StartupPlugin,
-					  octoprint.plugin.ShutdownPlugin,
-					  octoprint.plugin.SimpleApiPlugin):
+
+#### Constants for photo delay and inactive timeout
+PHOTO_DELAY = 5  # seconds
+INACTIVE_TIMEOUT = 240  # seconds
+
+#### Set up logging
+log = logging.getLogger("octoprint.plugins.servo_webcam")
+
+#### Plugin class definition
+
+class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin,ShutdownPlugin):
 
 	def __init__(self):
 		self.pi = None
@@ -160,27 +175,10 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
 	##-- Template hooks
 
 	def get_template_configs(self):
-		return [dict(type="settings", custom_bindings=False),
-				dict(type="generic", template="EasyServo.jinja2", custom_bindings=True)]
-
-	##~~ Softwareupdate hook
-
-	def get_update_information(self):
-		return dict(
-			EasyServo=dict(
-				displayName="Easy Servo",
-				displayVersion=self._plugin_version,
-
-				# version check: github repository
-				type="github_release",
-				user="mledan",
-				repo="OctoPrint-EasyServo",
-				current=self._plugin_version,
-
-				# update method: pip
-				pip="https://github.com/mledan/OctoPrint-EasyServo/archive/{target_version}.zip"
-			)
-		)
+		return [
+            dict(type="settings", custom_bindings=False, template="servowebcam_settings.jinja2"),
+            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2")
+        ]
 
 	##~~ Utility functions
 
@@ -758,17 +756,18 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
 		return flask.jsonify(foo="bar")
 
 
-__plugin_name__ = "Easy Servo"
-__plugin_pythoncompat__ = ">=2.7,<4"
-
+#### Plugin metadata
+__plugin_name__ = "Servo Webcam"
+__plugin_pythoncompat__ = ">=3.7,<4"
 
 def __plugin_load__():
 	global __plugin_implementation__
-	__plugin_implementation__ = EasyservoPlugin()
+	__plugin_implementation__ = ServoWebcamPlugin()
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
-		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
 		"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
 		"octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
 	}
+ 
+    
