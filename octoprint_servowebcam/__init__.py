@@ -121,7 +121,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 		# Define your plugin's asset files to automatically include in the
 		# core UI here.
 		return dict(
-			js=["js/ServoWebcam.js"],
+			js=["js/servowebcam.js"],
 		)
 
 	##~~ StartupPlugin mixin
