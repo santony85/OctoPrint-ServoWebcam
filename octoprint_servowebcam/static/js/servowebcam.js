@@ -38,7 +38,7 @@ $(function () {
     ServoWebcam = {};
     ServoWebcam.ServoWebcamOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}];
 
-    function ServoWebcamViewModel(parameters) {
+    function ServowebcamViewModel(parameters) {
         var self = this;
 
         self.controlViewModel = parameters[0];
@@ -462,7 +462,7 @@ $(function () {
     }
 
     OCTOPRINT_VIEWMODELS.push({
-        construct: ServoWebcamViewModel,
+        construct: ServowebcamViewModel,
         dependencies: ["controlViewModel", "settingsViewModel"],
         elements: ["#control-jog-xy-servo"]
     });

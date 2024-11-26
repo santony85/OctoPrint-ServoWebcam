@@ -26,7 +26,7 @@ import re
 import math
 
 import flask
-from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin,ShutdownPlugin
+import octoprint.plugin
 import RPi.GPIO as GPIO
 import threading
 import logging
@@ -42,11 +42,16 @@ PHOTO_DELAY = 5  # seconds
 INACTIVE_TIMEOUT = 240  # seconds
 
 #### Set up logging
-log = logging.getLogger("octoprint.plugins.servo_webcam")
+log = logging.getLogger("plugins.servo_webcam")
 
 #### Plugin class definition
 
-class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin,ShutdownPlugin):
+class ServoWebcamPlugin(octoprint.plugin.SettingsPlugin,
+					  octoprint.plugin.AssetPlugin,
+					  octoprint.plugin.TemplatePlugin,
+					  octoprint.plugin.StartupPlugin,
+					  octoprint.plugin.ShutdownPlugin,
+					  octoprint.plugin.SimpleApiPlugin):
 
 	def __init__(self):
 		self.pi = None
