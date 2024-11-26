@@ -15,6 +15,7 @@ import pantilthat
 import flask
 
 import RPi.GPIO as GPIO
+from gpiozero import Servo
 
 
 class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
@@ -113,7 +114,11 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
         self._settings.set(["libraryUsed"], libraryUsed)
         self._settings.save()
         self._logger.info("The libraryUsed is {}".format(libraryUsed))
+        myGPIO=13
+        myServo = Servo(myGPIO)
+        myServo.mid()
         if libraryUsed == "rpigpio":
+            pigpioUsed = False
             GPIOX = self._settings.get_int(["GPIOX"])
             GPIOY = self._settings.get_int(["GPIOY"])
             GPIO.setmode(GPIO.BCM)
@@ -123,6 +128,8 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
             self.pX.start(2.5) # Initialization  
             self.pY = GPIO.PWM(GPIOY, 50) # GPIO 17 for PWM with 50Hz
             self.pY.start(2.5) # Initialization  
+            self.pX.ChangeDutyCycle(10)
+            self.pY.ChangeDutyCycle(10)
         elif libraryUsed == "pigpio":
             pigpioUsed = True
             if self.pi is None:
@@ -786,6 +793,7 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
                         self._logger.info("unknown axis {}".format(str(axis)))
 
         if command == "EASYSERVO_GET_POSITION":
+            
             if pigpioUsed:
                 if self._settings.get_boolean(["xInvert"]):
                     currentX = 180 - self.width_to_angle(
