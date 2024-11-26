@@ -1,0 +1,4 @@
+<a href="javascript:void(0)" data-bind="click: onToggleTimelapseEnable" class="pull-right">
+    <i class="fa" data-bind="css: {'fa-toggle-off' : !settings.settings.plugins.servowebcam.enabled(), 'fa-toggle-on' : settings.settings.plugins.servowebcam.enabled()}" style="font-size: 25px;"></i>
+    <span class="timelapse-text" style="font-size: 20px; margin-left: 10px;" data-bind="text: settings.settings.plugins.servowebcam.enabled() ? 'Timelapse Enabled' : 'Timelapse Disabled'"></span>
+</a>
