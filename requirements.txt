@@ -8,3 +8,5 @@
 
 .
 pigpio
+gpiozero
+RPi.GPIO
