@@ -131,6 +131,17 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
 			"""self._settings.set(["currentX"], xAutoAngle)
 			self._settings.set(["currentY"], yAutoAngle)
 			self._settings.save()"""
+        elif libraryUsed == "rpigpio":
+            GPIOX = self._settings.get_int(["GPIOX"])
+            GPIOY = self._settings.get_int(["GPIOY"])
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(GPIOX, GPIO.OUT)
+            GPIO.setup(GPIOY, GPIO.OUT)
+            self.pX = GPIO.PWM(GPIOX, 50) # GPIO 17 for PWM with 50Hz
+            self.pX.start(2.5)
+            self.pY = GPIO.PWM(GPIOY, 50) # GPIO 17 for PWM with 50Hz
+            self.pY.start(2.5)
+  
 		else:
 			pigpioUsed = False
 			pantilthat.pan(self.angle_to_pimoroni(xAutoAngle))
