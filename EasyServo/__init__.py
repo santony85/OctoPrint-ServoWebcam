@@ -28,6 +28,9 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
     def __init__(self):
         self.pi = None
         self.currentZ = 0
+        myGPIO=13
+        myServo = Servo(myGPIO)
+        myServo.min()
 
     # ~~ SettingsPlugin mixin
     def get_settings_defaults(self):
@@ -114,9 +117,6 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
         self._settings.set(["libraryUsed"], libraryUsed)
         self._settings.save()
         self._logger.info("The libraryUsed is {}".format(libraryUsed))
-        myGPIO=13
-        myServo = Servo(myGPIO)
-        myServo.mid()
         if libraryUsed == "rpigpio":
             pigpioUsed = False
             GPIOX = self._settings.get_int(["GPIOX"])
@@ -124,12 +124,13 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
             GPIO.setmode(GPIO.BCM)
             GPIO.setup(GPIOX, GPIO.OUT)
             GPIO.setup(GPIOY, GPIO.OUT)
-            self.pX = GPIO.PWM(GPIOX, 50) # GPIO 17 for PWM with 50Hz
-            self.pX.start(2.5) # Initialization  
-            self.pY = GPIO.PWM(GPIOY, 50) # GPIO 17 for PWM with 50Hz
-            self.pY.start(2.5) # Initialization  
-            self.pX.ChangeDutyCycle(10)
-            self.pY.ChangeDutyCycle(10)
+            pX = GPIO.PWM(GPIOX, 50) # GPIO 17 for PWM with 50Hz
+            pX.start(2.5) # Initialization  
+            pY = GPIO.PWM(GPIOY, 50) # GPIO 17 for PWM with 50Hz
+            pY.start(2.5) # Initialization  
+            pX.ChangeDutyCycle(10)
+            pY.ChangeDutyCycle(10)
+            
         elif libraryUsed == "pigpio":
             pigpioUsed = True
             if self.pi is None:
