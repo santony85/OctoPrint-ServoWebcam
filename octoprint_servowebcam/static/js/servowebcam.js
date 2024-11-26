@@ -28,17 +28,17 @@
     ]);
 });*/
 /*
- * View model for EasyServo
+ * View model for ServoWebcam
  *
  * Author: Franfran
  * License: AGPLv3
  */
 $(function () {
 
-    EasyServo = {};
-    EasyServo.EasyServoOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}];
+    ServoWebcam = {};
+    ServoWebcam.ServoWebcamOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}];
 
-    function EasyservoViewModel(parameters) {
+    function ServoWebcamViewModel(parameters) {
         var self = this;
 
         self.controlViewModel = parameters[0];
@@ -59,7 +59,7 @@ $(function () {
 
         self.onBeforeBinding = function () {
             $("#control-easy-servo-wrapper").insertAfter("#control-jog-custom");
-            self.plugin_settings = self.settingsViewModel.settings.plugins.EasyServo;
+            self.plugin_settings = self.settingsViewModel.settings.plugins.ServoWebcam;
             self.chosenOption(self.plugin_settings.chosenOption());
             self.point1(self.plugin_settings.point1());
             self.point2(self.plugin_settings.point2());
@@ -67,9 +67,9 @@ $(function () {
             self.point4(self.plugin_settings.point4());
             self.point5(self.plugin_settings.point5());
 
-            OctoPrint.settings.getPluginSettings("EasyServo").done(function(response) {
+            OctoPrint.settings.getPluginSettings("ServoWebcam").done(function(response) {
                 self.usedLibrary = response.libraryUsed
-                let table = document.getElementById('settings_plugin_EasyServo_table');
+                let table = document.getElementById('settings_plugin_ServoWebcam_table');
                 let parent = table.parentNode;
                 let spanText = document.createElement("span");
                 spanText.textContent = "Current loaded library: ";
@@ -89,7 +89,7 @@ $(function () {
                 getCurrentPositionButton.textContent = "Get Current Position"
 
                 if (self.usedLibrary === 'pigpio') {
-                    document.getElementById("thirdTabEasyServo").style.display = "none";
+                    document.getElementById("thirdTabServoWebcam").style.display = "none";
                     document.getElementById("gpio-number-x").textContent = "X Axis GPIO Number";
                     document.getElementById("gpio-number-y").textContent = "Y Axis GPIO Number";
                     document.getElementById("autohome-angle-x").textContent = "X AutoHome Angle";
@@ -107,8 +107,8 @@ $(function () {
                     document.getElementById("x-absolute-label").textContent = "X Absolute";
                     document.getElementById("y-absolute-label").textContent = "Y Absolute";
                 } else {
-                    document.getElementById("firstTabEasyServo").style.display = "none";
-                    document.getElementById("secondTabEasyServo").style.display = "none";
+                    document.getElementById("firstTabServoWebcam").style.display = "none";
+                    document.getElementById("secondTabServoWebcam").style.display = "none";
                     document.getElementById("gpio-number-x").textContent = "Pan Axis GPIO Number";
                     document.getElementById("gpio-number-y").textContent = "Tilt Axis GPIO Number";
                     document.getElementById("autohome-angle-x").textContent = "Pan AutoHome Angle";
@@ -132,7 +132,7 @@ $(function () {
         self.onAfterBinding = function () {
             // console.log("yop")
             boolBound = true //Check to see if everything is already bound
-            OctoPrint.settings.getPluginSettings('EasyServo').done(function(response) {
+            OctoPrint.settings.getPluginSettings('ServoWebcam').done(function(response) {
                 isToggled = JSON.parse(response.lockState);
                 setLockingState(isToggled);
             });
@@ -149,7 +149,7 @@ $(function () {
         }
 
         self.onDataUpdaterPluginMessage = function (plugin, data) {
-            if (plugin === "EasyServo") {
+            if (plugin === "ServoWebcam") {
                 let angles = data.split(" ");
                 document.getElementById("currentPositionX").textContent = angles[0];
                 document.getElementById("currentPositionY").textContent = angles[1];
@@ -159,10 +159,10 @@ $(function () {
         self.autoHome = function(){
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin1": self.plugin_settings.GPIOX(), "pin2": self.plugin_settings.GPIOY()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin1": "PAN", "pin2": "TILT"})
                 }
 
@@ -172,10 +172,10 @@ $(function () {
         self.autoHomeX = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin": self.plugin_settings.GPIOX()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin": "PAN"})
                 }
             }
@@ -184,10 +184,10 @@ $(function () {
         self.autoHomeY = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin": self.plugin_settings.GPIOY()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcamAUTOHOME",
                         {"pin": "TILT"})
                 }
             }
@@ -196,10 +196,10 @@ $(function () {
         self.right = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.yRelativeAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": "PAN", "angle": self.plugin_settings.yRelativeAngle()})
                 }
             }
@@ -208,10 +208,10 @@ $(function () {
         self.left = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": self.plugin_settings.GPIOX(), "angle": "-" + self.plugin_settings.xRelativeAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": "PAN", "angle": "-" + self.plugin_settings.yRelativeAngle()})
                 }
             }
@@ -220,10 +220,10 @@ $(function () {
         self.up = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yRelativeAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": "TILT", "angle": self.plugin_settings.yRelativeAngle()})
                 }
             }
@@ -232,10 +232,10 @@ $(function () {
         self.down = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": self.plugin_settings.GPIOY(), "angle": "-" + self.plugin_settings.yRelativeAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_REL",
                         {"pin": "TILT", "angle": "-" + self.plugin_settings.yRelativeAngle()})
                 }
             }
@@ -244,10 +244,10 @@ $(function () {
         self.xabs = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.xAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": self.plugin_settings.xAngle()})
                 }
             }
@@ -256,10 +256,10 @@ $(function () {
         self.yabs = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yAngle()})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": self.plugin_settings.yAngle()})
                 }
             }
@@ -268,20 +268,20 @@ $(function () {
         self.ztrack = function() {
             isToggled = !isToggled;
             setLockingState(isToggled);
-            OctoPrint.settings.savePluginSettings('EasyServo', {"lockState": isToggled})
+            OctoPrint.settings.savePluginSettings('ServoWebcam', {"lockState": isToggled})
         }
 
         self.point1 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate1").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate1").value})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": document.getElementById("xCoordinate1").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": document.getElementById("yCoordinate1").value})
                 }
             }
@@ -289,14 +289,14 @@ $(function () {
         self.point2 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate2").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate2").value})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": document.getElementById("xCoordinate2").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": document.getElementById("yCoordinate2").value})
                 }
             }
@@ -304,14 +304,14 @@ $(function () {
         self.point3 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate3").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate3").value})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": document.getElementById("xCoordinate3").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": document.getElementById("yCoordinate3").value})
                 }
             }
@@ -319,14 +319,14 @@ $(function () {
         self.point4 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate4").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate4").value})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": document.getElementById("xCoordinate4").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": document.getElementById("yCoordinate4").value})
                 }
             }
@@ -334,21 +334,21 @@ $(function () {
         self.point5 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate5").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate5").value})
                 } else {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "PAN", "angle": document.getElementById("xCoordinate5").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
+                    OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_ABS",
                         {"pin": "TILT", "angle": document.getElementById("yCoordinate5").value})
                 }
             }
         }
 
         document.getElementById("get-current-position").onclick = function() {
-            OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_GET_POSITION")
+            OctoPrint.simpleApiCommand("ServoWebcam", "ServoWebcam_GET_POSITION")
         }
 
         let restrictedIds = ["#control-xangle", "#control-yangle"];
@@ -407,7 +407,7 @@ $(function () {
         document.getElementById("librarySelect").onchange = function(e) {
             if (e.isTrusted && this.value !== self.usedLibrary) {
                 (new PNotify({
-                    title: 'EasyServo',
+                    title: 'ServoWebcam',
                         text: '\nA library change will require a restart of the Octoprint server. This action may disrupt any ongoing print jobs.\n',
                         type: 'alert',
                         hide: false,
@@ -462,7 +462,7 @@ $(function () {
     }
 
     OCTOPRINT_VIEWMODELS.push({
-        construct: EasyservoViewModel,
+        construct: ServoWebcamViewModel,
         dependencies: ["controlViewModel", "settingsViewModel"],
         elements: ["#control-jog-xy-servo"]
     });

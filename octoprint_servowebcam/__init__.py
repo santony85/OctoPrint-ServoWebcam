@@ -20,16 +20,19 @@
 # * servowebcam On/OFF button <----------- WORKING
 # 
 ##############################################
-import os
+from __future__ import absolute_import
+import time
+import re
+import math
+
 import flask
 from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin,ShutdownPlugin
 import RPi.GPIO as GPIO
 import threading
 import logging
 import time
-import requests
-import subprocess
-import shutil
+import pigpio
+import pantilthat
 
 
 
@@ -118,7 +121,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 		# Define your plugin's asset files to automatically include in the
 		# core UI here.
 		return dict(
-			js=["js/EasyServo.js"],
+			js=["js/ServoWebcam.js"],
 		)
 
 	##~~ StartupPlugin mixin
@@ -450,7 +453,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 				time.sleep(sleepTime / 1000)
 
 	def process_gcode(self, comm, line, *args, **kwargs):
-		if line.startswith('EASYSERVO_REL'):
+		if line.startswith('ServoWebcam_REL'):
 			if len(line.split()) == 3:
 				if pigpioUsed:
 					command, GPIO, ang = line.split()
@@ -469,7 +472,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 					else:
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 
-		if line.startswith('EASYSERVO_ABS'):
+		if line.startswith('ServoWebcam_ABS'):
 			if len(line.split()) == 3:
 				if pigpioUsed:
 					command, GPIO, ang = line.split()
@@ -488,9 +491,9 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 					else:
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
-				self._logger.info("please use EASYSERVO_ABS PIN/AXIS ANGLE instead of '{}'".format(str(line)))
+				self._logger.info("please use ServoWebcam_ABS PIN/AXIS ANGLE instead of '{}'".format(str(line)))
 
-		if line.startswith('EASYSERVOAUTOHOME'):
+		if line.startswith('ServoWebcamAUTOHOME'):
 			xAutoAngle = self._settings.get_int(["xAutoAngle"])
 			yAutoAngle = self._settings.get_int(["yAutoAngle"])
 			if len(line.split()) == 3:
@@ -560,7 +563,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 						self._logger.info("unknown axis {}".format(str(axis)))
 			else:
 				self._logger.info(
-					"Please use EASYSERVOAUTOHOME GPIO1/AXIS1 (GPIO2/AXIS2) instead of '{}'".format(str(line)))
+					"Please use ServoWebcamAUTOHOME GPIO1/AXIS1 (GPIO2/AXIS2) instead of '{}'".format(str(line)))
 
 		return line
 
@@ -604,14 +607,14 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 
 	def get_api_commands(self):
 		return {
-			"EASYSERVO_REL": [],
-			"EASYSERVO_ABS": [],
-			"EASYSERVOAUTOHOME": [],
-			"EASYSERVO_GET_POSITION": []
+			"ServoWebcam_REL": [],
+			"ServoWebcam_ABS": [],
+			"ServoWebcamAUTOHOME": [],
+			"ServoWebcam_GET_POSITION": []
 		}
 
 	def on_api_command(self, command, data):
-		if command == "EASYSERVO_REL":
+		if command == "ServoWebcam_REL":
 			if len(data) == 3:
 				if pigpioUsed:
 					GPIO, ang = data["pin"], data["angle"]
@@ -631,9 +634,9 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
 				self._logger.info(
-					"please use the EASYSERVO_REL PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
+					"please use the ServoWebcam_REL PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
 
-		if command == 'EASYSERVO_ABS':
+		if command == 'ServoWebcam_ABS':
 			if len(data) == 3:
 				if pigpioUsed:
 					GPIO, ang = data["pin"], data["angle"]
@@ -654,9 +657,9 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 						self._logger.info("please use PAN or TILT instead of '" + str(axis)) + "'"
 			else:
 				self._logger.info(
-					"please use EASYSERVO_ABS PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
+					"please use ServoWebcam_ABS PIN/AXIS ANGLE instead of '{} {}'".format(str(command), str(data)))
 
-		if command == 'EASYSERVOAUTOHOME':
+		if command == 'ServoWebcamAUTOHOME':
 			xAutoAngle = self._settings.get_int(["xAutoAngle"])
 			yAutoAngle = self._settings.get_int(["yAutoAngle"])
 			if len(data) == 3:
@@ -725,7 +728,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 					else:
 						self._logger.info("unknown axis {}".format(str(axis)))
 
-		if command == "EASYSERVO_GET_POSITION":
+		if command == "ServoWebcam_GET_POSITION":
 			if pigpioUsed:
 				if self._settings.get_boolean(["xInvert"]):
 					currentX = 180 - self.width_to_angle(
@@ -737,7 +740,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 						self.pi.get_servo_pulsewidth(self._settings.get_int(["GPIOY"])))
 				else:
 					currentY = self.width_to_angle(self.pi.get_servo_pulsewidth(self._settings.get_int(["GPIOY"])))
-				self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentX, currentY))
+				self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentX, currentY))
 			else:
 				if self._settings.get_boolean(["xInvert"]):
 					currentX = 180 - self.pimoroni_to_angle(pantilthat.get_pan())
@@ -748,9 +751,9 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 				else:
 					currentY = self.pimoroni_to_angle(pantilthat.get_tilt())
 				if self._settings.get_boolean(["axisInvert"]):
-					self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentY, currentX))
+					self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentY, currentX))
 				else:
-					self._plugin_manager.send_plugin_message("EasyServo", "{} {}".format(currentX, currentY))
+					self._plugin_manager.send_plugin_message("ServoWebcam", "{} {}".format(currentX, currentY))
 
 	def on_api_get(self, request):
 		return flask.jsonify(foo="bar")
