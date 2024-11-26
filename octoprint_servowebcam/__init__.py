@@ -258,7 +258,7 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
     def get_template_configs(self):
         return [
             dict(type="settings", custom_bindings=True, template="servowebcam_settings.jinja2"),
-            dict(type="navbar", custom_bindings=True, template="servowebcam_navbar.jinja2"),
+            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2"),
             dict(type="tab", custom_bindings=True, template="servowebcam_tab.jinja2", data_bind="allowBind: true")
         ]
 
