@@ -7,7 +7,7 @@
 $(function () {
 
     EasyServo = {};
-    EasyServo.EasyServoOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}, {name: "RPi.GPIO", value:"rpigio"}];
+    EasyServo.EasyServoOptions = [{name: "Pigpio", value: "pigpio"}, {name: "GpioZero", value:"pimoroni"}];
 
     function EasyservoViewModel(parameters) {
         var self = this;
@@ -60,25 +60,6 @@ $(function () {
                 getCurrentPositionButton.textContent = "Get Current Position"
 
                 if (self.usedLibrary === 'pigpio') {
-                    document.getElementById("thirdTabEasyServo").style.display = "none";
-                    document.getElementById("gpio-number-x").textContent = "X Axis GPIO Number";
-                    document.getElementById("gpio-number-y").textContent = "Y Axis GPIO Number";
-                    document.getElementById("autohome-angle-x").textContent = "X AutoHome Angle";
-                    document.getElementById("autohome-angle-y").textContent = "Y AutoHome Angle";
-                    document.getElementById("axis-inversion-x").textContent = "X Axis Inversion";
-                    document.getElementById("axis-inversion-y").textContent = "Y Axis Inversion";
-                    document.getElementById("sleep-time-x").textContent = "X Axis Sleep Time";
-                    document.getElementById("sleep-time-y").textContent = "Y Axis Sleep Time";
-                    document.getElementById("x-relative-angle").textContent = "X Relative Angle";
-                    document.getElementById("y-relative-angle").textContent = "Y Relative Angle";
-                    document.getElementById("x-min-angle").textContent = "X Minimum Angle";
-                    document.getElementById("x-max-angle").textContent = "X Maximum Angle";
-                    document.getElementById("y-min-angle").textContent = "Y Minimum Angle";
-                    document.getElementById("y-max-angle").textContent = "Y Maximum Angle";
-                    document.getElementById("x-absolute-label").textContent = "X Absolute";
-                    document.getElementById("y-absolute-label").textContent = "Y Absolute";
-                } 
-                if (self.usedLibrary === 'rpigio') {
                     document.getElementById("thirdTabEasyServo").style.display = "none";
                     document.getElementById("gpio-number-x").textContent = "X Axis GPIO Number";
                     document.getElementById("gpio-number-y").textContent = "Y Axis GPIO Number";
@@ -151,10 +132,6 @@ $(function () {
                 if (self.usedLibrary === 'pigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
                         {"pin1": self.plugin_settings.GPIOX(), "pin2": self.plugin_settings.GPIOY()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
-                        {"pin1": self.plugin_settings.GPIOX(), "pin2": self.plugin_settings.GPIOY()})
                 } else {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
                         {"pin1": "PAN", "pin2": "TILT"})
@@ -166,10 +143,6 @@ $(function () {
         self.autoHomeX = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
-                        {"pin": self.plugin_settings.GPIOX()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
                         {"pin": self.plugin_settings.GPIOX()})
                 } else {
@@ -184,10 +157,6 @@ $(function () {
                 if (self.usedLibrary === 'pigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
                         {"pin": self.plugin_settings.GPIOY()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
-                        {"pin": self.plugin_settings.GPIOY()})
                 } else {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVOAUTOHOME",
                         {"pin": "TILT"})
@@ -198,10 +167,6 @@ $(function () {
         self.right = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
-                        {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.yRelativeAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.yRelativeAngle()})
                 } else {
@@ -216,10 +181,6 @@ $(function () {
                 if (self.usedLibrary === 'pigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": self.plugin_settings.GPIOX(), "angle": "-" + self.plugin_settings.xRelativeAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
-                        {"pin": self.plugin_settings.GPIOX(), "angle": "-" + self.plugin_settings.xRelativeAngle()})
                 } else {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": "PAN", "angle": "-" + self.plugin_settings.yRelativeAngle()})
@@ -230,10 +191,6 @@ $(function () {
         self.up = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
-                        {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yRelativeAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yRelativeAngle()})
                 } else {
@@ -248,10 +205,6 @@ $(function () {
                 if (self.usedLibrary === 'pigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": self.plugin_settings.GPIOY(), "angle": "-" + self.plugin_settings.yRelativeAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
-                        {"pin": self.plugin_settings.GPIOY(), "angle": "-" + self.plugin_settings.yRelativeAngle()})
                 } else {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_REL",
                         {"pin": "TILT", "angle": "-" + self.plugin_settings.yRelativeAngle()})
@@ -262,10 +215,6 @@ $(function () {
         self.xabs = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
-                        {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.xAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": self.plugin_settings.xAngle()})
                 } else {
@@ -280,11 +229,7 @@ $(function () {
                 if (self.usedLibrary === 'pigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
                         {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yAngle()})
-                } 
-                else if (self.usedLibrary === 'rpigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
-                        {"pin": self.plugin_settings.GPIOY(), "angle": self.plugin_settings.yAngle()})
-                }else {
+                } else {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
                         {"pin": "TILT", "angle": self.plugin_settings.yAngle()})
                 }
@@ -300,12 +245,6 @@ $(function () {
         self.point1 = function() {
             if (boolBound) {
                 if (self.usedLibrary === 'pigpio') {
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
-                        {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate1").value})
-                    OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
-                        {"pin": self.plugin_settings.GPIOY(), "angle": document.getElementById("yCoordinate1").value})
-                } 
-                if (self.usedLibrary === 'rpigpio') {
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
                         {"pin": self.plugin_settings.GPIOX(), "angle": document.getElementById("xCoordinate1").value})
                     OctoPrint.simpleApiCommand("EasyServo", "EASYSERVO_ABS",
