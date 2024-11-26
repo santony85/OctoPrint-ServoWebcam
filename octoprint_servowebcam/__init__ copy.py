@@ -31,8 +31,11 @@ import requests
 import subprocess
 import shutil
 
-from gpiozero import Servo
-
+servoXPIN = 13
+servoYPIN = 12
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(servoXPIN, GPIO.OUT)
+GPIO.setup(servoYPIN, GPIO.OUT)
 
 #### Constants for photo delay and inactive timeout
 PHOTO_DELAY = 5  # seconds
@@ -53,6 +56,11 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
         self._avi_files = []  # Initialize the list of AVI files
         self._avi_folder = None  # Path to the folder where AVI files are stored
         self.enabled = False  # Track whether the plugin is enabled or disabled
+        
+        self.pX = GPIO.PWM(servoXPIN, 50) # GPIO 17 for PWM with 50Hz
+        self.pX.start(2.5) # Initialization
+        self.pY = GPIO.PWM(servoYPIN, 50) # GPIO 17 for PWM with 50Hz
+        self.pY.start(2.5) # Initialization
 
     #### Define default settings for the plugin
     def get_settings_defaults(self):
