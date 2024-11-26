@@ -7,7 +7,7 @@
 $(function () {
 
     EasyServo = {};
-    EasyServo.EasyServoOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}];
+    EasyServo.EasyServoOptions = [{name: "Pigpio", value: "pigpio"}, {name: "Pimoroni", value:"pimoroni"}, {name: "RPi.GPIO", value:"rpigio"}];
 
     function EasyservoViewModel(parameters) {
         var self = this;

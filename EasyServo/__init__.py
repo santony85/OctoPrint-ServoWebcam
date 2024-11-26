@@ -14,6 +14,8 @@ import pantilthat
 
 import flask
 
+import RPi.GPIO as GPIO
+
 
 class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
 					  octoprint.plugin.AssetPlugin,
