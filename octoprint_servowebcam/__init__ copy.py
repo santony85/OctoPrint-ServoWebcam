@@ -31,11 +31,8 @@ import requests
 import subprocess
 import shutil
 
-servoXPIN = 13
-servoYPIN = 12
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(servoXPIN, GPIO.OUT)
-GPIO.setup(servoYPIN, GPIO.OUT)
+
+
 
 #### Constants for photo delay and inactive timeout
 PHOTO_DELAY = 5  # seconds
@@ -56,11 +53,6 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
         self._avi_files = []  # Initialize the list of AVI files
         self._avi_folder = None  # Path to the folder where AVI files are stored
         self.enabled = False  # Track whether the plugin is enabled or disabled
-        
-        self.pX = GPIO.PWM(servoXPIN, 50) # GPIO 17 for PWM with 50Hz
-        self.pX.start(2.5) # Initialization
-        self.pY = GPIO.PWM(servoYPIN, 50) # GPIO 17 for PWM with 50Hz
-        self.pY.start(2.5) # Initialization
 
     #### Define default settings for the plugin
     def get_settings_defaults(self):
@@ -111,11 +103,15 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
 
     #### Set up GPIO pins for photo capture
     def _setup_gpio(self):
-        gpio_pin = self._settings.get_int(["gpio_pin"])
+        #gpio_pin = self._settings.get_int(["gpio_pin"])
+        gpio_pin = 12
         log.info(f"GPIO Pin retrieved from settings: {gpio_pin}")
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.add_event_detect(gpio_pin, GPIO.BOTH, callback=self._ldr_changed, bouncetime=100)
+        GPIO.setup(gpio_pin, GPIO.OUT)
+        #GPIO.add_event_detect(gpio_pin, GPIO.BOTH, callback=self._ldr_changed, bouncetime=100)
+        self.p = GPIO.PWM(gpio_pin, 50)
+        self.p.start(2.5) # Initialization
+        self.p.ChangeDutyCycle(12.5)
 
     #### Clean up GPIO pins and ongoing processes
     def _cleanup(self):
@@ -261,9 +257,8 @@ class ServoWebcamPlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlug
     ##### Method to provide configuration for templates
     def get_template_configs(self):
         return [
-            dict(type="settings", custom_bindings=True, template="servowebcam_settings.jinja2"),
-            dict(type="navbar", custom_bindings=True, template="servowebcam_navbar.jinja2"),
-            dict(type="tab", custom_bindings=True, template="servowebcam_tab.jinja2", data_bind="allowBind: true")
+            dict(type="settings", custom_bindings=False, template="servowebcam_settings.jinja2"),
+            dict(type="generic", custom_bindings=True, template="servowebcam.jinja2")
         ]
 
     ##### Method to provide assets (JavaScript files)
