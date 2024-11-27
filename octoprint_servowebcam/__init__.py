@@ -19,18 +19,23 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
 
 	def get_template_configs(self):
 		return [
-			dict(type="navbar", custom_bindings=False),
+			#dict(type="navbar", custom_bindings=False),
             dict(type="generic", template="servowebcam.jinja2", custom_bindings=True),
 			dict(type="settings", custom_bindings=False)
 		]
 
 	def get_assets(self):
 		return dict(
-			js=["js/servowebcam.js"],
-			css=["css/helloworld.css"],
-			less=["less/helloworld.less"]
+			js=["js/servowebcam.js"]
+			#css=["css/helloworld.css"]
+			#less=["less/helloworld.less"]
 		)
 
 __plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = ServoWebcamdPlugin()
+__plugin_hooks__ = {
+	"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
+	"octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
+	}
+
