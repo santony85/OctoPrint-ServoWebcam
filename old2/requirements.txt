@@ -7,3 +7,6 @@
 ###
 
 .
+pigpio
+gpiozero
+RPi.GPIO 
