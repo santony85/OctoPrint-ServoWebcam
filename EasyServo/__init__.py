@@ -32,8 +32,8 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
 	##~~ SettingsPlugin mixin
 	def get_settings_defaults(self):
 		return dict(
-			chosenOption='pigpio',
-			libraryUsed='pigpio',
+			chosenOption='pimoroni',
+			libraryUsed='pimoroni',
 			GPIOX="12",
 			GPIOY="13",
 			xRelativeAngle="10",
