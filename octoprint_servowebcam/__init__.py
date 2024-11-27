@@ -23,6 +23,9 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         ppp = 0
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(12, GPIO.OUT)
+        GPIO.setup(13, GPIO.OUT)
         
         
     def on_after_startup(self):
