@@ -1,11 +1,18 @@
 # coding=utf-8
 from __future__ import absolute_import
+import time
+
+import re
+
+import math
 
 import octoprint.plugin
+import threading
+
 from gpiozero import Servo
-from time import sleep
 
 import flask
+
 
 class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.AssetPlugin,
@@ -32,9 +39,7 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
 
     def get_assets(self):
         return dict(
-            js=["js/servowebcam.js"]
-            #css=["css/helloworld.css"]
-            #less=["less/helloworld.less"]
+            js=["js/servowebcam.js"],
         )
     def on_api_get(self, request):
        return flask.jsonify(foo="bar")

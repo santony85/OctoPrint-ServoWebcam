@@ -40,5 +40,26 @@
                 <button type="button" id="control-ztrack-servo" class="btn" data-bind="enable: controlViewModel.isOperational(), click: function() { OctoPrint.control.sendGcode(ztrack());}"></button>
             </div>
         </div>
+        <div id="control-custom-servo-points" class="jog-panel">
+            <h1>&nbsp</h1>
+            <label for="control-custom-points" class="control-label">Custom points</label>
+            <div class="text-center" id="control-custom-points">
+                <label>
+                    <button id="control-custom-point1" type="button" class="btn btn-primary" data-bind="text: plugin_settings.point1, click: function() { OctoPrint.control.sendGcode(point1());}"></button>
+                </label>
+                <label>
+                    <button id="control-custom-point2" type="button" class="btn btn-primary" data-bind="text: plugin_settings.point2, click: function() { OctoPrint.control.sendGcode(point2());}"></button>
+                </label>
+                <label>
+                    <button id="control-custom-point3" type="button" class="btn btn-primary" data-bind="text: plugin_settings.point3, click: function() { OctoPrint.control.sendGcode(point3());}"></button>
+                </label>
+                <label>
+                    <button id="control-custom-point4" type="button" class="btn btn-primary" data-bind="text: plugin_settings.point4, click: function() { OctoPrint.control.sendGcode(point4());}"></button>
+                </label>
+                <label>
+                    <button id="control-custom-point5" type="button" class="btn btn-primary" data-bind="text: plugin_settings.point5, click: function() { OctoPrint.control.sendGcode(point5());}"></button>
+                </label>
+            </div>
+        </div>
     </div>
 </div>
