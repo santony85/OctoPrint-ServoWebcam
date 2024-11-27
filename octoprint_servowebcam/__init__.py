@@ -22,6 +22,8 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         ppp = 0
+        myGPIO=13
+        myServo = Servo(myGPIO)
         
     def on_after_startup(self):
         self._logger.info("Servo Webcam! (more: %s)" % self._settings.get(["url"]))
