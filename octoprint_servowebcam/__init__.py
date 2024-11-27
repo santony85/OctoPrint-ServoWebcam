@@ -3,12 +3,12 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 
-class HelloWorldPlugin(octoprint.plugin.StartupPlugin,
+class ServoWebcamdPlugin(octoprint.plugin.StartupPlugin,
                        octoprint.plugin.TemplatePlugin,
                        octoprint.plugin.SettingsPlugin,
                        octoprint.plugin.AssetPlugin):
 	def on_after_startup(self):
-		self._logger.info("Hello World! (more: %s)" % self._settings.get(["url"]))
+		self._logger.info("Servo Webcam! (more: %s)" % self._settings.get(["url"]))
 
 	def get_settings_defaults(self):
 		return dict(url="https://en.wikipedia.org/wiki/Hello_world")
@@ -21,11 +21,11 @@ class HelloWorldPlugin(octoprint.plugin.StartupPlugin,
 
 	def get_assets(self):
 		return dict(
-			js=["js/helloworld.js"],
+			js=["js/servowebcam.js"],
 			css=["css/helloworld.css"],
 			less=["less/helloworld.less"]
 		)
 
-__plugin_name__ = "Hello World"
+__plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=2.7,<4"
-__plugin_implementation__ = HelloWorldPlugin()
+__plugin_implementation__ = ServoWebcamdPlugin()
