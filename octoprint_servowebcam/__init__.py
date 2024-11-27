@@ -13,8 +13,7 @@ from gpiozero import Servo
 
 import flask
 
-myGPIO=13
-myServo = Servo(myGPIO)
+
 
 class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.AssetPlugin,
