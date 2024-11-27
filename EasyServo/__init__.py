@@ -138,12 +138,12 @@ class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
             GPIOX = self._settings.get_int(["GPIOX"])
             GPIOY = self._settings.get_int(["GPIOY"])
             pigpioUsed = False
-            self.myServoX = Servo(GPIOX)
-            self.myServoY = Servo(GPIOY)
-            self.myServoX.value = 0
-            self.myServoY.value = 0    
-            #pantilthat.pan(self.angle_to_pimoroni(xAutoAngle))
-            #pantilthat.tilt(self.angle_to_pimoroni(xAutoAngle))
+            #self.myServoX = Servo(GPIOX)
+            #self.myServoY = Servo(GPIOY)
+            #self.myServoX.value = 0
+            #self.myServoY.value = 0    
+            pantilthat.pan(self.angle_to_pimoroni(xAutoAngle))
+            pantilthat.tilt(self.angle_to_pimoroni(xAutoAngle))
 
             """self._settings.set(["currentX"], xAutoAngle)
             self._settings.set(["currentY"], xAutoAngle)
