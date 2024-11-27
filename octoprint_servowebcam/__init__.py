@@ -5,10 +5,12 @@ import octoprint.plugin
 from gpiozero import Servo
 from time import sleep
 
-class ServoWebcamdPlugin(octoprint.plugin.StartupPlugin,
-                       octoprint.plugin.TemplatePlugin,
-                       octoprint.plugin.SettingsPlugin,
-                       octoprint.plugin.AssetPlugin):
+class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
+					  octoprint.plugin.AssetPlugin,
+					  octoprint.plugin.TemplatePlugin,
+					  octoprint.plugin.StartupPlugin,
+					  octoprint.plugin.ShutdownPlugin,
+					  octoprint.plugin.SimpleApiPlugin):
 	def on_after_startup(self):
 		self._logger.info("Servo Webcam! (more: %s)" % self._settings.get(["url"]))
 
@@ -18,6 +20,7 @@ class ServoWebcamdPlugin(octoprint.plugin.StartupPlugin,
 	def get_template_configs(self):
 		return [
 			dict(type="navbar", custom_bindings=False),
+            dict(type="generic", template="servowebcam.jinja2", custom_bindings=True),
 			dict(type="settings", custom_bindings=False)
 		]
 

@@ -4,9 +4,6 @@ $(function() {
 
         self.loginState = parameters[0];
         self.settings = parameters[1];
-
-        console.log(self);
-
         // this will hold the URL currently displayed by the iframe
         self.currentUrl = ko.observable();
 
