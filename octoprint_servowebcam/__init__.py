@@ -44,4 +44,11 @@ __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = ServoWebcamdPlugin()
 
 
+def __plugin_load__():
+	global __plugin_hooks__
+	__plugin_hooks__ = {
+		"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
+		"octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
+	}
+
 
