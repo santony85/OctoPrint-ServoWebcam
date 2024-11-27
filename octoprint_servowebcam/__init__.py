@@ -2,6 +2,8 @@
 from __future__ import absolute_import
 
 import octoprint.plugin
+from gpiozero import Servo
+from time import sleep
 
 class ServoWebcamdPlugin(octoprint.plugin.StartupPlugin,
                        octoprint.plugin.TemplatePlugin,

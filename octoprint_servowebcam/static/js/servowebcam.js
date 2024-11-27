@@ -5,6 +5,8 @@ $(function() {
         self.loginState = parameters[0];
         self.settings = parameters[1];
 
+        console.log(self);
+
         // this will hold the URL currently displayed by the iframe
         self.currentUrl = ko.observable();
 
@@ -14,6 +16,7 @@ $(function() {
         // this will be called when the user clicks the "Go" button and set the iframe's URL to the entered URL
         self.goToUrl = function() {
             self.currentUrl(self.newUrl());
+            console.log("self");
         };
 
         // This will get called before the HelloWorldViewModel gets bound to the DOM, but after its depedencies have
@@ -34,7 +37,7 @@ $(function() {
         // This is a list of dependencies to inject into the plugin, the order which you request here is the order
         // in which the dependencies will be injected into your view model upon instantiation via the parameters
         // argument
-        ["loginStateViewModel", "settingsViewModel"],
+        ["loginStateViewModel", "settingsViewModel","controlViewModel"],
 
         // Finally, this is the list of all elements we want this view model to be bound to.
         [document.getElementById("tab_plugin_servowebcam")]
