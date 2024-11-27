@@ -9,7 +9,7 @@ import math
 import octoprint.plugin
 import threading
 
-from gpiozero import Servo
+import RPi.GPIO as GPIO
 
 import flask
 
