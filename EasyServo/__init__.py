@@ -11,11 +11,11 @@ import threading
 
 import pigpio
 import pantilthat
+from gpiozero import Servo
 
 import flask
 
-import RPi.GPIO as GPIO
-from gpiozero import Servo
+
 
 
 class EasyservoPlugin(octoprint.plugin.SettingsPlugin,
