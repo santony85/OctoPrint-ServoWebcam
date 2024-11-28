@@ -22,6 +22,7 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
         try:
             from gpiozero import Servo
             self.myServo = Servo(13)
+            self._hasGPIO = True
             """global GPIO
             from RPi import GPIO
             self._hasGPIO = True
