@@ -39,7 +39,10 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
         self._logger.info("Servo Webcam! (more: %s)" % self._settings.get(["url"]))
 
     def get_settings_defaults(self):
-        return dict(url="https://en.wikipedia.org/wiki/Hello_world")
+        return dict(
+            url="https://en.wikipedia.org/wiki/Hello_world",
+            hasGPIO=self._hasGPIO
+            )
 
     def get_template_configs(self):
         return [

@@ -13,7 +13,7 @@ $(function() {
         // this will be called when the user clicks the "Go" button and set the iframe's URL to the entered URL
         self.goToUrl = function() {
             self.currentUrl(self.newUrl());
-            console.log("self");
+            console.log(self.settings.settings.plugins.servowebcam.url());
         };
 
         // This will get called before the HelloWorldViewModel gets bound to the DOM, but after its depedencies have
@@ -22,6 +22,7 @@ $(function() {
         self.onBeforeBinding = function() {
             self.newUrl(self.settings.settings.plugins.servowebcam.url());
             self.goToUrl();
+            console.log("ici");
         }
     }
 
