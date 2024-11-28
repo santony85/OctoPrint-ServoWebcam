@@ -53,10 +53,10 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
             self._logger.error("Error importing RPi.GPIO.")
             return
 
-        self._logger.info("Running RPi.GPIO version {}".format(GPIO.VERSION))
+        """self._logger.info("Running RPi.GPIO version {}".format(GPIO.VERSION))
         if GPIO.VERSION < "0.6":
             self._logger.error("RPi.GPIO version 0.6.0 or greater required.")
-            return
+            return"""
         
         #GPIO.setwarnings(False)
         #GPIO.setmode(GPIO.BCM)
