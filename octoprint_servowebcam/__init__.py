@@ -19,7 +19,19 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.ShutdownPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
-        import RPi.GPIO as GPIO
+        try:
+            global GPIO
+            import RPi.GPIO as GPIO
+            self._hasGPIO = True
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(12, GPIO.OUT)
+            GPIO.setup(13, GPIO.OUT)
+            self.pX = GPIO.PWM(12, 50) # GPIO 17 for PWM with 50Hz
+            self.pX.start(2.5) # Initialization
+            self.pY = GPIO.PWM(12, 50) # GPIO 17 for PWM with 50Hz
+            self.pY.start(2.5) # Initialization
+        except (ImportError, RuntimeError):
+            self._hasGPIO = False
 
         
         
