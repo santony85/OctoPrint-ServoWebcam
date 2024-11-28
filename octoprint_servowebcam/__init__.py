@@ -61,9 +61,8 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         try:
-                ppp=0
-                #GPIO.setup(12, GPIO.OUT)
-                #GPIO.setup(13, GPIO.OUT)
+                GPIO.setup(12, GPIO.OUT)
+                GPIO.setup(13, GPIO.OUT)
                 
         except Exception:
                 self._logger.exception(
