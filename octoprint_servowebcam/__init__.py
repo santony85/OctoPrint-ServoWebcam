@@ -10,6 +10,7 @@ import octoprint.plugin
 import threading
 
 import flask
+from gpiozero import Servo
 
 
 class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
@@ -20,9 +21,9 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         try:
-            from gpiozero import Servo
-            self.myServo = Servo(13)
-            self._hasGPIO = True
+            p=0
+            #self.myServo = Servo(13)
+            #self._hasGPIO = True
             """global GPIO
             from RPi import GPIO
             self._hasGPIO = True
