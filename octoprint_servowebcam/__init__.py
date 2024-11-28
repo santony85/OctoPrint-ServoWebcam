@@ -9,10 +9,7 @@ import math
 import octoprint.plugin
 import threading
 
-import RPi.GPIO as GPIO
-
 import flask
-
 
 
 class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
@@ -23,6 +20,7 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         ppp = 0
+        import RPi.GPIO as GPIO
 
         
         
