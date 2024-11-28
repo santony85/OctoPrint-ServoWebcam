@@ -63,6 +63,8 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
         try:
                 GPIO.setup(12, GPIO.OUT)
                 GPIO.setup(13, GPIO.OUT)
+                self.p = GPIO.PWM(12, 50) # GPIO 17 for PWM with 50Hz
+                self.p.start(2.5) # Initialization
                 
         except Exception:
                 self._logger.exception(
