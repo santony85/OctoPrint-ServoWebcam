@@ -19,7 +19,6 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.ShutdownPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
-        ppp = 0
         import RPi.GPIO as GPIO
 
         
@@ -48,12 +47,5 @@ __plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = ServoWebcamdPlugin()
 
-def __plugin_load__():
 
-	global __plugin_hooks__
-	__plugin_hooks__ = {
-		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
-		"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
-		"octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
-	}
 
