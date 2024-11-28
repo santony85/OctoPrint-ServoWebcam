@@ -20,8 +20,8 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         try:
-            global GPIO
-            from RPi import GPIO
+            #global GPIO
+            #from RPi import GPIO
             self._hasGPIO = True
             """GPIO.setmode(GPIO.BCM)
             GPIO.setup(12, GPIO.OUT)
@@ -58,11 +58,11 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
             self._logger.error("RPi.GPIO version 0.6.0 or greater required.")
             return
         
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
+        #GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BCM)
         try:
-                GPIO.setup(12, GPIO.OUT)
-                GPIO.setup(13, GPIO.OUT)
+                #GPIO.setup(12, GPIO.OUT)
+                #GPIO.setup(13, GPIO.OUT)
                 
         except Exception:
                 self._logger.exception(
