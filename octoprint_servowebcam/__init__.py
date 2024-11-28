@@ -46,11 +46,9 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
    
 __plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=2.7,<4"
-##__plugin_implementation__ = ServoWebcamdPlugin()
+__plugin_implementation__ = ServoWebcamdPlugin()
 
 def __plugin_load__():
-	global __plugin_implementation__
-	__plugin_implementation__ = ServoWebcamdPlugin()
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
