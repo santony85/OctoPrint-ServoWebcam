@@ -45,6 +45,7 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
             )
         
     def on_settings_initialized(self):
+        self._logger.error("Error importing RPi.GPIO. OK")
         self.configure_gpio()
         
     def configure_gpio(self):
