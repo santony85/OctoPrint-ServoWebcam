@@ -1,27 +1,21 @@
-# OctoPrint GPIO Control
+# OctoPrint-PSUControl-MomentaryGpio/
 
-GPIO Control adds a sidebar with on/off buttons. You can add as many buttons as you want that will control each device connected to your Raspberry Pi.
-
-Very useful if you want to add some electronic/improvements to your printer.
-
-![GpioControl](assets/sidebar.png)
-![GpioControl](assets/settings.png)
+A sub-plugin for the PSUControl plugin that allows using bistable relays for power control. It implements
+the same mechanisms as PSUControl, so it requires python periphery to be installed, only it pulls the GPIO
+up/down only momentarily and then returns it to the default state.
 
 ## Setup
 
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-    https://github.com/catgiggle/OctoPrint-GpioControl/archive/master.zip
+    https://github.com/irotsoma/OctoPrint-PSUControl-MomentaryGpio/archive/master.zip
 
 ## Configuration
 
-Just add correct GPIO configuration:
+- Set the PSUControl Switching Method to "Plugin" and select "PSUControl MomentaryGpio Plugin" from the dropdown
 
-- select icon using icon picker (or typing manually) for better identification
-- type name for your device connected to GPIO
-- type pin number according to BCM numeration - for more details please [visit this page](https://pinout.xyz/)
-- select if device is driven for low or high state of GPIO
-    - _active high_ means that device is **on for high state** of GPIO and **off for low state**
-    - _active low_ means that device is **on for low state** of GPIO and **off for high state**
-- select if device should be on or off by default eg. after startup
+- Then in the PSUControl MomentaryGpio Plugin settings screen, set the appropriate GPIO Device, PIN, and pulse time in
+milliseconds.
+
+http://plugins.octoprint.org/plugin/psucontrol_momentarygpio/

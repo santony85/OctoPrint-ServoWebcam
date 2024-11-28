@@ -1,39 +1,38 @@
 # coding=utf-8
-
 ########################################################################################################################
 ### Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-plugin_identifier = "gpiocontrol"
+plugin_identifier = "psucontrol_momentarygpio"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
-plugin_package = "octoprint_gpiocontrol"
+plugin_package = "octoprint_psucontrol_momentarygpio"
 
-# The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
+# The plugin's human-readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "OctoPrint-GpioControl"
+plugin_name = "OctoPrint-PSUControl-MomentaryGpio"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.0.8"
+plugin_version = "1.0.1"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """GPIO Control adds a sidebar with on/off buttons. You can add as many buttons as you want that will control each device connected to your Raspberry Pi."""
+plugin_description = """Adds a momentary option that sends a signal for a brief time rather than continuous."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "Damian Wójcik"
+plugin_author = "Justin Zak"
 
 # The plugin's author's mail address.
-plugin_author_email = "mr.catgiggle@gmail.com"
+plugin_author_email = "irotsomadev@gmail.com"
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/catgiggle/OctoPrint-GpioControl"
+plugin_url = "https://github.com/irotsoma/OctoPrint-PSUControl-MomentaryGpio"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["RPi.GPIO"]
+plugin_requires = ["python-periphery"]
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point
@@ -59,7 +58,9 @@ plugin_ignored_packages = []
 # Example:
 #     plugin_requires = ["someDependency==dev"]
 #     additional_setup_parameters = {"dependency_links": ["https://github.com/someUser/someRepo/archive/master.zip#egg=someDependency-dev"]}
-additional_setup_parameters = {}
+# "python_requires": ">=3,<4" blocks installation on Python 2 systems, to prevent confused users and provide a helpful error.
+# Remove it if you would like to support Python 2 as well as 3 (not recommended).
+additional_setup_parameters = {"python_requires": ">=3,<4"}
 
 ########################################################################################################################
 
@@ -68,8 +69,10 @@ from setuptools import setup
 try:
     import octoprint_setuptools
 except:
-    print("Could not import OctoPrint's setuptools, are you sure you are running that under "
-          "the same python installation that OctoPrint is installed under?")
+    print(
+        "Could not import OctoPrint's setuptools, are you sure you are running that under "
+        "the same python installation that OctoPrint is installed under?"
+    )
     import sys
 
     sys.exit(-1)
@@ -87,7 +90,7 @@ setup_parameters = octoprint_setuptools.create_plugin_setup_parameters(
     requires=plugin_requires,
     additional_packages=plugin_additional_packages,
     ignored_packages=plugin_ignored_packages,
-    additional_data=plugin_additional_data
+    additional_data=plugin_additional_data,
 )
 
 if len(additional_setup_parameters):
