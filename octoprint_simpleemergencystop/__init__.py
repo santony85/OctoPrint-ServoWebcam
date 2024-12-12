@@ -16,22 +16,9 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
                                 octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         self.emergencyGCODE = ""
-        self.client = TJC('/dev/ttyUSB0', 115200, self.event_handler)
+        
     # Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
-    async def event_handler(self, type_, data):
-        if type_ == EventType.STARTUP:
-            print('We have booted up!')
-        elif type_ == EventType.TOUCH:
-            print('A button (id: %d) was touched on page %d' % (data.component_id, data.page_id))
-    
-        logging.info('Event %s data: %s', type, str(data))
-        print('Event %s data: %s', type, str(data))
-        #await self.client.set('t3.txt', '1.67')
-        #print(await self.client.get('x0.txt'))
-    
-    async def run(self):
-        await self.client.connect()    
-        print('finished')
+
   
     def get_settings_defaults(self):
         return dict(
