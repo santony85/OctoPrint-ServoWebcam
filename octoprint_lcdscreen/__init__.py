@@ -17,13 +17,13 @@
 # * "i" buttons for more info
 #
 #also added to navbar
-# * SlaTimelapse On/OFF button <----------- WORKING
+# * lcdscreen On/OFF button <----------- WORKING
 # 
 ##############################################
 import os
 import flask
-from octoprint.plugin import StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin
-import RPi.GPIO as GPIO
+import octoprint.plugin
+
 import threading
 import logging
 import time
@@ -39,7 +39,12 @@ INACTIVE_TIMEOUT = 240  # seconds
 log = logging.getLogger("octoprint.plugins.sla_timelapse")
 
 #### Plugin class definition
-class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlugin, SimpleApiPlugin):
+class LcdScreenPlugin(octoprint.plugin.SettingsPlugin,
+					  octoprint.plugin.AssetPlugin,
+					  octoprint.plugin.TemplatePlugin,
+					  octoprint.plugin.StartupPlugin,
+					  octoprint.plugin.ShutdownPlugin,
+					  octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         super().__init__()
         # Initialize plugin state variables
@@ -77,11 +82,11 @@ class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlu
         timeout = self._settings.get_int(["timeout"])
         avi_folder = self._settings.get(["avi_folder"])
     ########### BOOT LOG'S #######################
-        log.info(f"SlaTimelapse Config - GPIO Pin retrieved from settings: {gpio_pin}")
-        log.info(f"SlaTimelapse Config - Photo Delay retrieved from settings: {photo_delay}")
-        log.info(f"SlaTimelapse Config - Store Folder retrieved from settings: {snapshot_folder}")
-        log.info(f"SlaTimelapse Config - Timeout value from settings: {timeout}")
-        log.info(f"SlaTimelapse Config - AVI Folder retrieved from settings: {avi_folder}")
+        log.info(f"lcdscreen Config - GPIO Pin retrieved from settings: {gpio_pin}")
+        log.info(f"lcdscreen Config - Photo Delay retrieved from settings: {photo_delay}")
+        log.info(f"lcdscreen Config - Store Folder retrieved from settings: {snapshot_folder}")
+        log.info(f"lcdscreen Config - Timeout value from settings: {timeout}")
+        log.info(f"lcdscreen Config - AVI Folder retrieved from settings: {avi_folder}")
 
     #### Method called when settings are saved
     def on_settings_save(self, data):
@@ -250,15 +255,15 @@ class SlaTimelapsePlugin(StartupPlugin, TemplatePlugin, SettingsPlugin, AssetPlu
     ##### Method to provide configuration for templates
     def get_template_configs(self):
         return [
-            dict(type="settings", custom_bindings=True, template="slatimelapse_settings.jinja2"),
-            dict(type="navbar", custom_bindings=True, template="slatimelapse_navbar.jinja2"),
-            dict(type="tab", custom_bindings=True, template="slatimelapse_tab.jinja2", data_bind="allowBind: true")
+            dict(type="settings", custom_bindings=True, template="lcdscreen_settings.jinja2"),
+            dict(type="navbar", custom_bindings=True, template="lcdscreen_navbar.jinja2"),
+            dict(type="tab", custom_bindings=True, template="lcdscreen_tab.jinja2", data_bind="allowBind: true")
         ]
 
     ##### Method to provide assets (JavaScript files)
     def get_assets(self):
         return dict(
-            js=["js/slatimelapse.js"]
+            js=["js/lcdscreen.js"]
         )
 
 #### Plugin metadata
@@ -268,4 +273,10 @@ __plugin_pythoncompat__ = ">=3.7,<4"
 #### Plugin load function
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = SlaTimelapsePlugin()
+    __plugin_implementation__ = LcdScreenPlugin()
+    
+    global __plugin_hooks__
+    __plugin_hooks__ = {
+		"octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
+		"octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
+	}

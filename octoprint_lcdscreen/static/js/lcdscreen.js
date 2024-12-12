@@ -1,13 +1,13 @@
 $(function() {
-    function slatimelapseViewModel(parameters) {
+    function lcdscreenViewModel(parameters) {
         var self = this;
 
         self.loginState = parameters[0];
         self.settings = parameters[1];
 
         self.onToggleTimelapseEnable = function() {
-            console.log("current setting: " + self.settings.settings.plugins.slatimelapse.enabled());
-            self.settings.settings.plugins.slatimelapse.enabled(!self.settings.settings.plugins.slatimelapse.enabled());
+            console.log("current setting: " + self.settings.settings.plugins.lcdscreen.enabled());
+            self.settings.settings.plugins.lcdscreen.enabled(!self.settings.settings.plugins.lcdscreen.enabled());
             self.settings.saveData();
         };
     }
@@ -16,7 +16,7 @@ $(function() {
     // the global variable ADDITIONAL_VIEWMODELS
     ADDITIONAL_VIEWMODELS.push([
         // This is the constructor to call for instantiating the plugin
-        slatimelapseViewModel,
+        lcdscreenViewModel,
 
         // This is a list of dependencies to inject into the plugin, the order which you request here is the order
         // in which the dependencies will be injected into your view model upon instantiation via the parameters
@@ -24,6 +24,6 @@ $(function() {
         ["loginStateViewModel", "settingsViewModel"],
 
         // Finally, this is the list of all elements we want this view model to be bound to.
-        ["#navbar_plugin_slatimelapse", "#settings_plugin_slatimelapse"]
+        ["#navbar_plugin_lcdscreen", "#settings_plugin_lcdscreen"]
     ]);
 });

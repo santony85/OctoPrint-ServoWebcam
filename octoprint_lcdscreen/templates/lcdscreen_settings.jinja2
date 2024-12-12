@@ -2,7 +2,7 @@
     <label class="control-label">Plugin Status:</label>
     <div class="controls">
         <label class="checkbox">
-            <input type="checkbox" id="plugin_enabled" data-bind="checked: settings.settings.plugins.slatimelapse.enabled">
+            <input type="checkbox" id="plugin_enabled" data-bind="checked: settings.settings.plugins.lcdscreen.enabled">
             Enabled
         </label>
     </div>
@@ -16,10 +16,10 @@
 <div class="control-group">
     <label class="control-label" for="gpio_pin">GPIO Pin Number:</label>
     <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="gpio_pin" min="0" max="40" step="1" data-bind="value: settings.settings.plugins.slatimelapse.gpio_pin">
+        <input type="number" class="form-control input-sm" style="width: 50px;" id="gpio_pin" min="0" max="40" step="1" data-bind="value: settings.settings.plugins.lcdscreen.gpio_pin">
         <span class="info-icon">
 		    <a href="https://pinout.xyz/" target="_blank" class="same-color">
-		        <img src="/plugin/slatimelapse/static/img/info.png" alt="Information">
+		        <img src="/plugin/lcdscreen/static/img/info.png" alt="Information">
 		    </a>
 		</span>
         <p class="help-block">Enter the BCM GPIO pin number (0-40) for your setup.</p>
@@ -28,10 +28,10 @@
 <div class="control-group">
     <label class="control-label" for="photo_delay">Photo Delay (seconds):</label>
     <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="photo_delay" min="1" step="1" data-bind="value: settings.settings.plugins.slatimelapse.photo_delay">
+        <input type="number" class="form-control input-sm" style="width: 50px;" id="photo_delay" min="1" step="1" data-bind="value: settings.settings.plugins.lcdscreen.photo_delay">
         <span class="info-icon">
             <a href="#" class="same-color" data-toggle="modal" data-target="#helpModal"> <!-- Added data-toggle and data-target attributes -->
-                <img src="/plugin/slatimelapse/static/img/info.png" alt="Information">
+                <img src="/plugin/lcdscreen/static/img/info.png" alt="Information">
             </a>
         </span>
         <p class="help-block">Enter the delay between photos (in seconds).</p>
@@ -64,10 +64,10 @@
 <div class="control-group"> <!-- Added -->
     <label class="control-label" for="timeout">Timeout (seconds):</label>
     <div class="controls">
-        <input type="number" class="form-control input-sm" style="width: 50px;" id="timeput" min="1" step="1" data-bind="value: settings.settings.plugins.slatimelapse.timeout">
+        <input type="number" class="form-control input-sm" style="width: 50px;" id="timeput" min="1" step="1" data-bind="value: settings.settings.plugins.lcdscreen.timeout">
         <span class="info-icon">
             <a href="#" class="same-color" data-toggle="modal" data-target="#helpModalTimeout"> <!-- Added data-toggle and data-target attributes -->
-                <img src="/plugin/slatimelapse/static/img/info.png" alt="Information">
+                <img src="/plugin/lcdscreen/static/img/info.png" alt="Information">
             </a>
         </span>
         <p class="help-block">Enter the timeout value (in seconds) after last layer to generate Video File.</p>
@@ -109,7 +109,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img src="/plugin/slatimelapse/static/img/ldr_cable.png" alt="LDR Cable Image">
+                <img src="/plugin/lcdscreen/static/img/ldr_cable.png" alt="LDR Cable Image">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -121,7 +121,7 @@
 </td>
 <td>
 		<a href="">
-		    <img src="/plugin/slatimelapse/static/img/slatimelapse.png" alt="Description of the image">
+		    <img src="/plugin/lcdscreen/static/img/lcdscreen.png" alt="Description of the image">
 		</a>
 </td>
 </tr>
