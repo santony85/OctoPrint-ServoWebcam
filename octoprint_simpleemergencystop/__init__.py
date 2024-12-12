@@ -85,7 +85,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
 			)
 		)
 
-
+ 
 # If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
 # ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
 # can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
@@ -101,3 +101,12 @@ def __plugin_load__():
 	__plugin_hooks__ = {
 		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 	}
+	logging.basicConfig(
+		format='%(asctime)s - %(levelname)s - %(message)s',
+		level=logging.DEBUG,
+		handlers=[
+			logging.StreamHandler()
+		])
+	loop = asyncio.get_event_loop()
+	asyncio.ensure_future(app.run())
+	loop.run_forever()
