@@ -2,6 +2,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import octoprint.plugin
+import asyncio
+import logging
+import random
+
+from nextion import TJC, EventType
 
 
 class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
