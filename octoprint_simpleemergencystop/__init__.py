@@ -16,10 +16,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
                                 octoprint.plugin.SimpleApiPlugin):
     def __init__(self):
         self.emergencyGCODE = ""
-        
-    # Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
 
-  
     def get_settings_defaults(self):
         return dict(
             emergencyGCODE="G28",
