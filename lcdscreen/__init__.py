@@ -13,7 +13,7 @@ import flask
 
 
 
-class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
+class LcdScreenPlugin(octoprint.plugin.SettingsPlugin,
                       octoprint.plugin.AssetPlugin,
                       octoprint.plugin.TemplatePlugin,
                       octoprint.plugin.StartupPlugin,
@@ -29,6 +29,7 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
         
     def on_after_startup(self):
         self._logger.info("Servo Webcam! (more: %s)" % self._settings.get(["url"]))
+        self._printer.commands()
 
     def get_settings_defaults(self):
         return dict(
@@ -54,7 +55,17 @@ class ServoWebcamdPlugin(octoprint.plugin.SettingsPlugin,
    
 __plugin_name__ = "Servo Webcam"
 __plugin_pythoncompat__ = ">=2.7,<4"
-__plugin_implementation__ = ServoWebcamdPlugin()
+
+def __plugin_load__():
+    global __plugin_implementation__
+    __plugin_implementation__ = LcdScreenPlugin()
+
+    global __plugin_hooks__
+    __plugin_hooks__ = {
+        "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
+        "octoprint.comm.protocol.gcode.received": __plugin_implementation__.process_gcode,
+        "octoprint.comm.protocol.gcode.sending": __plugin_implementation__.read_gcode
+    }
 
 
 

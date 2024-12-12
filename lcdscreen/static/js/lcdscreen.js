@@ -1,5 +1,5 @@
 $(function() {
-    function ServoWebcamViewModel(parameters) {
+    function LcdScreenViewModel(parameters) {
         var self = this;
 
         self.loginState = parameters[0];
@@ -13,14 +13,14 @@ $(function() {
         // this will be called when the user clicks the "Go" button and set the iframe's URL to the entered URL
         self.goToUrl = function() {
             self.currentUrl(self.newUrl());
-            console.log(self.settings.settings.plugins.servowebcam.hasGPIO());
+            console.log(self.settings.settings.plugins.lcdscreen.hasGPIO());
         };
 
         // This will get called before the HelloWorldViewModel gets bound to the DOM, but after its depedencies have
         // already been initialized. It is especially guaranteed that this method gets called _after_ the settings
         // have been retrieved from the OctoPrint backend and thus the SettingsViewModel been properly populated.
         self.onBeforeBinding = function() {
-            self.newUrl(self.settings.settings.plugins.servowebcam.url());
+            self.newUrl(self.settings.settings.plugins.lcdscreen.url());
             self.goToUrl();
             console.log("ici");
         }
@@ -30,7 +30,7 @@ $(function() {
     // the global variable ADDITIONAL_VIEWMODELS
     ADDITIONAL_VIEWMODELS.push([
         // This is the constructor to call for instantiating the plugin
-        ServoWebcamViewModel,
+        LcdScreenViewModel,
 
         // This is a list of dependencies to inject into the plugin, the order which you request here is the order
         // in which the dependencies will be injected into your view model upon instantiation via the parameters
@@ -38,6 +38,6 @@ $(function() {
         ["loginStateViewModel", "settingsViewModel","controlViewModel"],
 
         // Finally, this is the list of all elements we want this view model to be bound to.
-        [document.getElementById("tab_plugin_servowebcam")]
+        [document.getElementById("tab_plugin_lcdscreen")]
     ]);
 });
