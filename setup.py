@@ -4,36 +4,36 @@
 ### Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-plugin_identifier = "octolight"
+plugin_identifier = "simpleemergencystop"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
-plugin_package = "octoprint_octolight"
+plugin_package = "octoprint_simpleemergencystop"
 
 # The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "OctoLight"
+plugin_name = "OctoPrint-SimpleEmergencyStop"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.0.1"
+plugin_version = "1.0.6"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """A simple plugin to toggle a GPIO pin on a RPi. This can be toggled through a button, printer events or custom GCODE."""
+plugin_description = """A simple plugin that add an emergency stop buton on NavBar"""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
-plugin_author = "Steven Thomson"
+plugin_author = "Clément Sébastien"
 
 # The plugin's author's mail address.
-plugin_author_email = "thomst08@hotmail.com"
+plugin_author_email = "seb6596@gmail.com"
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/thomst08/OctoLight"
+plugin_url = "https://github.com/Sebclem/OctoPrint-SimpleEmergencyStop"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["RPi.GPIO", "flask", "flask_babel"]
+plugin_requires = []
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point
