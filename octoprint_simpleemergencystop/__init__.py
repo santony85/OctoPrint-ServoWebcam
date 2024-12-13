@@ -25,10 +25,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
     def __init__(self):
         self.emergencyGCODE = ""
         self.client = TJC('/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0', 115200, self.event_handler)
-        self.loop = asyncio.new_event_loop()
-        self.loop = asyncio.get_event_loop()
-        asyncio.set_event_loop(self.loop)
-        self.loop.run_forever()
+
         
         # Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
     async def event_handler(self, type_, data):
@@ -46,6 +43,10 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
             self._printer.commands("G28")
     
     async def run(self):
+        self.loop = asyncio.new_event_loop()
+        #self.loop = asyncio.get_event_loop()
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
         await self.client.connect()
         #await self.client.set('t3.txt', '1.45')
         #await client.sleep()
@@ -139,7 +140,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
 __plugin_name__ = "Simple Emergency Stop"
 __plugin_pythoncompat__ = ">=2.7,<4"
 
-print(__name__)
+
 
 def __plugin_load__():
     global __plugin_implementation__
@@ -150,7 +151,7 @@ def __plugin_load__():
         "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
     }
 
-if __name__ == '__SimpleemergencystopPlugin__':
+"""if __name__ == '__SimpleemergencystopPlugin__':
 	logging.basicConfig(
 		format='%(asctime)s - %(levelname)s - %(message)s',
 		level=logging.DEBUG,
@@ -160,4 +161,4 @@ if __name__ == '__SimpleemergencystopPlugin__':
 	loop = asyncio.get_event_loop()
 	app = SimpleemergencystopPlugin()
 	asyncio.ensure_future(app.run())
-	loop.run_forever()
+	loop.run_forever()"""
