@@ -43,10 +43,10 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
             self._printer.commands("G28")
     
     async def run(self):
-        self.loop = asyncio.new_event_loop()
+        #self.loop = asyncio.new_event_loop()
         #self.loop = asyncio.get_event_loop()
-        asyncio.set_event_loop(self.loop)
-        self.loop.run_forever()
+        #asyncio.set_event_loop(self.loop)
+        #self.loop.run_forever()
         await self.client.connect()
         #await self.client.set('t3.txt', '1.45')
         #await client.sleep()
@@ -133,7 +133,18 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
             )
         )
 
-
+if __name__ == '__main__':
+	logging.basicConfig(
+		format='%(asctime)s - %(levelname)s - %(message)s',
+		level=logging.DEBUG,
+		handlers=[
+			logging.StreamHandler()
+		])
+	loop = asyncio.get_event_loop()
+	app = SimpleemergencystopPlugin()
+	asyncio.ensure_future(app.run())
+	loop.run_forever()
+ 
 # If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
 # ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
 # can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
