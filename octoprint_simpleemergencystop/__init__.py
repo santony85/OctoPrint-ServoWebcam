@@ -1,4 +1,18 @@
 # coding=utf-8
+
+"""if __name__ == '__main__':
+	logging.basicConfig(
+		format='%(asctime)s - %(levelname)s - %(message)s',
+		level=logging.DEBUG,
+		handlers=[
+			logging.StreamHandler()
+		])
+	loop = asyncio.get_event_loop()
+	app = App()
+	asyncio.ensure_future(app.run())
+	loop.run_forever()"""
+
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import octoprint.plugin
@@ -16,6 +30,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
     def __init__(self):
         self.emergencyGCODE = ""
         self.client = TJC('/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0', 115200, self.event_handler)
+        self.loop = asyncio.new_event_loop()
         
         # Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
     async def event_handler(self, type_, data):
@@ -126,6 +141,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
 __plugin_name__ = "Simple Emergency Stop"
 __plugin_pythoncompat__ = ">=2.7,<4"
 
+print(__name__)
 
 def __plugin_load__():
     global __plugin_implementation__
