@@ -5,7 +5,7 @@ import octoprint.plugin
 import asyncio
 import logging
 import random
-from nextion import TJC, EventType
+
 
 class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
 								octoprint.plugin.TemplatePlugin,
