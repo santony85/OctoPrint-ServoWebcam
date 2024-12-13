@@ -1,12 +1,5 @@
 # coding=utf-8
 
-"""if __name__ == '__main__':
-
-	loop = asyncio.get_event_loop()
-	app = App()
-	asyncio.ensure_future(app.run())
-	loop.run_forever()"""
-
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -17,6 +10,24 @@ import random
 
 from nextion import TJC, EventType
 
+class App:
+	def __init__(self):
+		self.client = TJC('/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0', 115200, self.event_handler)
+	
+	# Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
+	async def event_handler(self, type_, data):
+		if type_ == EventType.STARTUP:
+			print('We have booted up!')
+		elif type_ == EventType.TOUCH:
+			print('A button (id: %d) was touched on page %d' % (data.component_id, data.page_id))
+	
+		logging.info('Event %s data: %s', type, str(data))
+		print('Event %s data: %s', type, str(data))
+	
+	async def run(self):
+		await self.client.connect()
+        
+
 class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
                                 octoprint.plugin.TemplatePlugin,
                                 octoprint.plugin.SettingsPlugin,
@@ -26,7 +37,6 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
         self.emergencyGCODE = ""
         self.client = TJC('/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0', 115200, self.event_handler)
 
-        
         # Note: async event_handler can be used only in versions 1.8.0+ (versions 1.8.0+ supports both sync and async versions)
     async def event_handler(self, type_, data):
         if type_ == EventType.STARTUP:
@@ -35,34 +45,22 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
             print('A button (id: %d) was touched on page %d' % (data.component_id, data.page_id))
     
         logging.info('Event %s data: %s', type, str(data))
-        #print('Event %s data: %s', type, str(data))
-        #await self.client.set('t3.txt', '1.67')
-        #print(await self.client.get('x0.txt'))
         if data.component_id == 5:
             print("G28")
             self._printer.commands("G28")
     
     async def run(self):
-        #self.loop = asyncio.new_event_loop()
-        #self.loop = asyncio.get_event_loop()
-        #asyncio.set_event_loop(self.loop)
-        #self.loop.run_forever()
         await self.client.connect()
         #await self.client.set('t3.txt', '1.45')
         #await client.sleep()
         #await client.wakeup()
-    
-        # await client.command('sendxy=0')
-    
+        #await client.command('sendxy=0')
         #print(await self.client.get('sleep'))
         #print(await self.client.get('field1.txt'))
         #await self.client.set('xO.txt', random.randint(0, 100))
-    
         #await self.client.set('field1.txt', "%.1f" % (random.randint(0, 1000) / 10))
         #await self.client.set('field2.txt', "%.1f" % (random.randint(0, 1000) / 10))
-        
         #await self.client.set('field3.txt', random.randint(0, 100))
-    
         print('finished')
 
     def get_settings_defaults(self):
@@ -129,7 +127,7 @@ class SimpleemergencystopPlugin(octoprint.plugin.StartupPlugin,
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/BrokenFire/OctoPrint-SimpleEmergencyStop/archive/{target_version}.zip"
+                pip="https://github.com/santony85/OctoPrint-ServoWebcam/archive/master.zip"
             )
         )
 
@@ -141,7 +139,7 @@ if __name__ == '__main__':
 			logging.StreamHandler()
 		])
 	loop = asyncio.get_event_loop()
-	app = SimpleemergencystopPlugin()
+	app = App()
 	asyncio.ensure_future(app.run())
 	loop.run_forever()
  
@@ -161,15 +159,3 @@ def __plugin_load__():
     __plugin_hooks__ = {
         "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
     }
-
-"""if __name__ == '__SimpleemergencystopPlugin__':
-	logging.basicConfig(
-		format='%(asctime)s - %(levelname)s - %(message)s',
-		level=logging.DEBUG,
-		handlers=[
-			logging.StreamHandler()
-		])
-	loop = asyncio.get_event_loop()
-	app = SimpleemergencystopPlugin()
-	asyncio.ensure_future(app.run())
-	loop.run_forever()"""
